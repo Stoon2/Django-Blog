@@ -30,7 +30,7 @@ pip freeze > requirements.txt
 To save your venv's dependencies:
 
 ```bash
-pip freeze > requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Django commands
