@@ -24,7 +24,7 @@ deactivate
 to load the env dependencies -
 
 ```bash
-pip freeze > requirements.txt
+pip install -r requirements.txt
 ```
 
 To save your venv's dependencies:
