@@ -1,8 +1,7 @@
-from sre_parse import CATEGORIES
 from django.contrib import admin
-from .models import Categorie, Post,Forbiddenword
+from .models import Category, Post,Forbiddenword
 
 # Register your models here.
 admin.site.register(Post)
-admin.site.register(Categorie)
+admin.site.register(Category)
 admin.site.register(Forbiddenword)
