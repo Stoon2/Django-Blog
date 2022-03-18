@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -5,7 +6,28 @@ from django.contrib.auth.models import User
 class Post(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.CharField(max_length=255,default="uncategorized")
     body = models.TextField()
+
 
     def __str__(self):
         return self.title + ' | ' + str(self.author)
+
+
+class Categorie(models.Model):
+    name = models.CharField(max_length=255)
+
+
+    def __str__(self):
+        return self.name
+
+class Forbiddenword(models.Model):
+    name = models.CharField(max_length=255)
+
+
+    def __str__(self):
+        return self.name
+
+
+
+
