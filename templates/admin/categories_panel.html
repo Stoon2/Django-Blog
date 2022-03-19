@@ -1,0 +1,26 @@
+{% extends 'admin/base.html' %}
+
+{% block main_block %}
+
+<div class="container-fluid">
+    <h1>Manage Categories</h1>
+</div>
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <!-- <th>Author</th>
+        <th>Date Created</th> -->
+    </tr>
+    <br>
+    {% for category in categorys %}
+    <tr>
+        <td>{{ category.name }}</td>
+        <td><button class="btn btn-warning">Edit</button></td>
+        <td><button class="btn btn-danger">Delete</button></td>
+    </tr>
+    {% endfor %}
+</table>
+<button class="btn btn-success"href="{% url 'add_cat' %}">Add category</button>
+</div>
+{% endblock %}
+
