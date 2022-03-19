@@ -9,15 +9,21 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
+from django.shortcuts import render
+from .models import Post
+from django.views.generic import ListView, DetailView
 # Create your views here.
-@login_required(login_url='login')
-def home(request):
-    # Example of normal function below:
-    ###################################
-    # object_user = ObjectModel.all()
-    # context = {'all_users': object_user}
-    # return render(request, 'blog_app/home.html', context)
-    return render(request, 'blog_app/home.html')
+# @login_required(login_url='login')
+# def home(request):
+
+
+class HomeView(ListView):
+    model = Post
+    template_name = 'blog_app/home.html'
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'blog_app/post.html'
 
 def loginPG(request):
     # Example of normal function below:
