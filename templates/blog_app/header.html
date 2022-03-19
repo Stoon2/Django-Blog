@@ -5,20 +5,7 @@
   }
 </style>
 
-<script>
-  data=document.getElementsByClassName('data')
-  account=document.getElementsByClassName('account')
-  console.log(Request.user)
-  if (request.user =='AnonymousUser')
-      {name.classList.add('name')
-       account.classList.remove('name')
-       }
 
-  else
-    { account.classList.add('name')
-      name.classList.remove('name')
-      }
-</script>
 <header class="d-flex flex-wrap align-items-center justify-content-evenly justify-content-md-center py-3 mb-4 border-bottom bg-dark">
       <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
         <h3 style="color: white;">Blog</h3>
@@ -27,21 +14,31 @@
         </svg>
       </a>
 
-      <!-- <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-        <li><a href="#" class="nav-link px-2 link-dark">About</a></li>
-      </ul> -->
-
-
      
-      <div class="col-md-3 text-end" class="account">
+       <div class="col-md-3 text-end notlogged" style="margin-left: 600px;"  >
         <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
         <a class="btn btn-outline-primary" href="{% url 'signup' %}">Sign-up</a>
       </div>
-            
-      <div  style="margin-left: 150px;" class="data">
-        <span style="font-size: 18px ;color:white;margin-right: 20px;">Hello,{{request.user}}<span>
-        <span><a style="font-size: 18px ;color:white;margin-right: 20px;" href="{% url 'logout' %}">Logout</a></span>
+       
+      <div  style="margin-left: 600px;" class="logged">
+        <span style="font-size: 18px ;color:white;">Hello,{{request.user}}<span>
+        <span><a style="font-size: 18px ;color:white;" href="{% url 'logout' %}">Logout</a></span>
       </div>
     
     </header>
+    <script>
+      notlogged=document.getElementsByClassName('notlogged')
+      logged=document.getElementsByClassName('logged')
+      var data="{{request.user}}"
+      console.log(data)
+      if (data === 'AnonymousUser')
+          {
+            document.getElementsByClassName("logged")[0].style.display="none";
+            
+          }
+      else
+        {
+          document.getElementsByClassName("notlogged")[0].style.display="none";
+         }
+     
+    </script>
