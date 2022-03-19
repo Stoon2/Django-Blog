@@ -76,7 +76,7 @@ def logoutUser(request):
 def signup(request):
     # Example of normal function below:
     ###################################
-    if request.user.is_authenticated:
+    if request.user.is_authenticated :
         return redirect('home')
     else:
         form =CreateUserForm()
@@ -95,7 +95,7 @@ def signup(request):
 
 
 def add_cat(request):
-    if request.user.is_authenticated :
+    if request.user.is_authenticated and request.user.is_superuser :
         form = CategoryForm()
         if request.method == "POST":
             form = CategoryForm(request.POST)

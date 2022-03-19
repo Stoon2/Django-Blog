@@ -5,7 +5,7 @@
 {% block main_block %}
 
 {% load crispy_forms_tags %}
-<!-- {% if user.is_superuser %} -->
+{% if user.is_superuser %}
 <div class="container" style="padding: 40px;">
     <div class="card shadow col-lg-7 mx-auto">
         <div class="card-body">
