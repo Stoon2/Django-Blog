@@ -23,21 +23,21 @@ from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 
 def admin_home(request):
-    return render(request, 'admin/admin_home.html')
+    return render(request, 'blog_admin/blog_admin_home.html')
 
 def admin_posts(request):
     posts = Post.objects.all()
     context = {'posts': posts}
-    return render(request, 'admin/posts_panel.html', context)
+    return render(request, 'blog_admin/posts_panel.html', context)
 
 def admin_users(request):
-    return render(request, 'admin/users_panel.html')
+    return render(request, 'blog_admin/users_panel.html')
 
 def admin_categories(request):
-    return render(request, 'admin/categories_panel.html')
+    return render(request, 'blog_admin/categories_panel.html')
 
 def admin_forbidden(request):
-    return render(request, 'admin/forbidden_panel.html')
+    return render(request, 'blog_admin/forbidden_panel.html')
 # Create your views here.
 #def home(request):
     # Example of normal function below:
