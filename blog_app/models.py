@@ -43,7 +43,15 @@ class User(models.Model):
    
    def __str__(self) :
        return self.username+''+self.first_name+''+self.last_name+''+self.email+''+self.is_block
-  
+
+class Comment(models.Model):
+    username= models.CharField(max_length=150)
+    body = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    post_id = models.ForeignKey(Post , on_delete=models.CASCADE)
+    def __str__(self):
+        return self.username
+          
 
        
         
