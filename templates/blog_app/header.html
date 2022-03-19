@@ -1,4 +1,25 @@
-    <header class="d-flex flex-wrap align-items-center justify-content-evenly justify-content-md-center py-3 mb-4 border-bottom bg-dark">
+<style>
+  .name
+  {
+    display: none;
+  }
+</style>
+
+<script>
+  data=document.getElementsByClassName('data')
+  account=document.getElementsByClassName('account')
+  console.log(Request.user)
+  if (request.user =='AnonymousUser')
+      {name.classList.add('name')
+       account.classList.remove('name')
+       }
+
+  else
+    { account.classList.add('name')
+      name.classList.remove('name')
+      }
+</script>
+<header class="d-flex flex-wrap align-items-center justify-content-evenly justify-content-md-center py-3 mb-4 border-bottom bg-dark">
       <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
         <h3 style="color: white;">Blog</h3>
         <svg style="width: 3rem; height: 3rem; color:white;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-through-heart" viewBox="0 0 16 16">
@@ -11,8 +32,16 @@
         <li><a href="#" class="nav-link px-2 link-dark">About</a></li>
       </ul> -->
 
-      <div class="col-md-3 text-end">
+
+     
+      <div class="col-md-3 text-end" class="account">
         <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
         <a class="btn btn-outline-primary" href="{% url 'signup' %}">Sign-up</a>
       </div>
+            
+      <div  style="margin-left: 150px;" class="data">
+        <span style="font-size: 18px ;color:white;margin-right: 20px;">Hello,{{request.user}}<span>
+        <span><a style="font-size: 18px ;color:white;margin-right: 20px;" href="{% url 'logout' %}">Logout</a></span>
+      </div>
+    
     </header>
