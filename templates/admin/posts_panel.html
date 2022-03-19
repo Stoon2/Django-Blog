@@ -1,0 +1,26 @@
+{% extends 'admin/base.html' %}
+
+{% block main_block %}
+    <div class="container-fluid">
+        <h1>Manage Posts</h1>
+        <br>
+        
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date Created</th>
+            </tr>
+            {% for post in posts %}
+            <tr>
+                <td>{{ post.title }}</td>
+                <td>{{ post.author }}</td>
+                <td>{{ post.date_created }}</td>
+                <td><button class="btn btn-warning">Edit</button></td>
+                <td><button class="btn btn-danger">Delete</button></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button class="btn btn-success">Add Post</button>
+    </div>
+{% endblock %}

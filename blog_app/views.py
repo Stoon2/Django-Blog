@@ -22,10 +22,22 @@ from django.shortcuts import render
 from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 
+def admin_home(request):
+    return render(request, 'admin/admin_home.html')
 
+def admin_posts(request):
+    posts = Post.objects.all()
+    context = {'posts': posts}
+    return render(request, 'admin/posts_panel.html', context)
 
+def admin_users(request):
+    return render(request, 'admin/users_panel.html')
 
+def admin_categories(request):
+    return render(request, 'admin/categories_panel.html')
 
+def admin_forbidden(request):
+    return render(request, 'admin/forbidden_panel.html')
 # Create your views here.
 #def home(request):
     # Example of normal function below:
