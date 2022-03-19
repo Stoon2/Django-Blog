@@ -1,4 +1,5 @@
 from http.client import responses
+from unicodedata import category
 from urllib import response
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Post
@@ -129,3 +130,10 @@ def add_cat(request):
         return render(request, 'blog_app/add_category.html', context)
     else:
          return redirect('home') 
+
+
+def del_cat(request, cat_id):
+    if request.user.is_authenticated and request.user.is_superuser:
+        category = category.objects.get(id=cat_id)
+        category.delete()
+    return redirect('home')
