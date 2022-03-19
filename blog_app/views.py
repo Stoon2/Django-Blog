@@ -10,12 +10,16 @@ from email import message
 from multiprocessing import context
 from pdb import post_mortem
 from pickle import NONE
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
+
+from django.shortcuts import render
+from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 
 
@@ -38,6 +42,25 @@ def post_detail(request, pk):
 # @login_required(login_url='login')
 # def home(request):
 
+def filterComment(commint):
+    wordList = []
+     
+    forbiddenWords = Forbiddenword.objects.all()
+    
+    for word in forbiddenWords.iterator():
+        wordList.append(word.name)
+        
+    for i in range(0 , len(wordList)): 
+        capital = wordList[i].upper()
+        index1 = commint.find(wordList[i])
+        index12 = commint.find(capital)  
+        if index1 >=0:
+            commint = commint.replace(wordList[i] , "****")
+        if index12 >=0:
+             commint = commint.replace(capital , "****")
+    return HttpResponse(commint)
+     
+    
 
 class HomeView(ListView):
     model = Post

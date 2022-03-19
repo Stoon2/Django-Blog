@@ -27,6 +27,8 @@ class Post(models.Model):
 
 class Forbiddenword(models.Model):
     name = models.CharField(max_length=25)
+    def __str__(self):
+        return self.name
     
 
     def __str__(self):
@@ -41,4 +43,7 @@ class User(models.Model):
    
    def __str__(self) :
        return self.username+''+self.first_name+''+self.last_name+''+self.email+''+self.is_block
+  
+
+       
         
