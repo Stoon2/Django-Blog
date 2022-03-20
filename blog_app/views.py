@@ -26,11 +26,6 @@ class PostDetailView(DetailView):
     template_name = 'blog_app/post.html'
 
 def loginPG(request):
-    # Example of normal function below:
-    ###################################
-    # object_user = ObjectModel.all()
-    # context = {'all_users': object_user}
-    # return render(request, 'blog_app/home.html', context)
     if request.user.is_authenticated:
         return redirect('home')
     else:
@@ -52,8 +47,6 @@ def logoutUser(request):
 
 
 def signup(request):
-    # Example of normal function below:
-    ###################################
     if request.user.is_authenticated:
         return redirect('home')
     else:
@@ -66,8 +59,5 @@ def signup(request):
                 messages.success(request,'Account created for '+user)
                 return redirect('login')
         context ={'form':form}
-        # object_user = ObjectModel.all()
-        # context = {'all_users': object_user}
-        # return render(request, 'blog_app/home.html', context)
         return render(request, 'blog_app/signup.html',context)
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post,User
+from .models import Post
 
 from .models import Category, Post,Forbiddenword
 
