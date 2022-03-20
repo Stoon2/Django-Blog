@@ -15,7 +15,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     date_created = models.DateTimeField(default=timezone.now)
-    picture = models.ImageField(blank=True)
+    picture = models.ImageField(null=True, blank=True, upload_to="images/")
     categories = models.ManyToManyField(Category)
 
     class Meta:
