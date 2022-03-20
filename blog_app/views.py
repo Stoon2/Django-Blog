@@ -2,6 +2,7 @@ from http.client import responses
 from unicodedata import category
 from urllib import response
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from .models import Post,Category
 from django.views.generic import ListView, DetailView
 from .forms import CategoryForm 
@@ -18,27 +19,33 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 
 from django.shortcuts import render
 from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_home(request):
     return render(request, 'blog_admin/blog_admin_home.html')
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_posts(request):
     posts = Post.objects.all()
     context = {'posts': posts}
     return render(request, 'blog_admin/posts_panel.html', context)
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_users(request):
     return render(request, 'blog_admin/users_panel.html')
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_categories(request):
      categories = Category.objects.all()
      context = {'categories': categories}
      return render(request, 'blog_admin/categories_panel.html',context)
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_forbidden(request):
      words = Forbiddenword.objects.all()
      context = {'words': words}
