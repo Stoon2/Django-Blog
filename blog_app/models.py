@@ -26,8 +26,19 @@ class Post(models.Model):
 
 class Forbiddenword(models.Model):
     name = models.CharField(max_length=25)
-    
-
     def __str__(self):
         return self.name
+    
 
+
+class Comment(models.Model):
+    username= models.CharField(max_length=150)
+    body = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    post_id = models.ForeignKey(Post , on_delete=models.CASCADE)
+    def __str__(self):
+        return self.username
+          
+
+       
+        

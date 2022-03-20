@@ -1,0 +1,33 @@
+{% extends 'blog_admin/base.html' %}
+
+{% block main_block %}
+<div class="container-fluid">
+    <h1>Choose one of the following tables to manage:</h1>
+    <div class="list-group">
+        <a href="{% url 'admin_users' %}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Users</h5>
+          </div>
+          <p class="mb-1">Do CRUD and Activate/Deactivate Users.</p>
+        </a>
+        <a href="{% url 'admin_posts' %}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Posts</h5>
+          </div>
+          <p class="mb-1">Do CRUD on Posts</p>
+        </a>
+        <a href="{% url 'admin_categories' %}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Categories</h5>
+          </div>
+          <p class="mb-1">Do CRUD on Categories</p>
+        </a>
+        <a href="{% url 'admin_forbidden' %}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">Forbidden Words</h5>
+            </div>
+            <p class="mb-1">Add and Remove Forbidden Words</p>
+          </a>
+      </div>
+</div>
+{% endblock %}
