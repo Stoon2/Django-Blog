@@ -1,16 +1,19 @@
 from django.urls import path
 from . import views
-from .views import HomeView, PostDetailView,add_cat
+from .views import HomeView, PostDetailView, add_cat
 
 urlpatterns = [
     path('login', views.loginPG, name='login'),
     path('logout', views.logoutUser, name='logout'),
     path('', HomeView.as_view(), name='home'),
-    path('post/<int:pk>', PostDetailView.as_view(), name='post-detail'),
+    path('post/<post_id>', PostDetailView.as_view(), name='post-detail'),
     path('signup', views.signup, name='signup'),
     path('add_category/', views.add_cat, name="add_cat"),
-    path('del-cat/<cat_id>', views.del_cat, name='del'),
+    path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
+    path('del-post/<post_id>', views.del_post, name='del_post'),
 
+
+    # Admin Views
     path('blog_admin/', views.admin_home, name='admin_home'),
     path('blog_admin/posts', views.admin_posts, name='admin_posts'),
     path('blog_admin/users', views.admin_users, name='admin_users'),

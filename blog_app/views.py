@@ -2,7 +2,7 @@ from http.client import responses
 from unicodedata import category
 from urllib import response
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Post
+from .models import Post,Category
 from django.views.generic import ListView, DetailView
 from .forms import CategoryForm 
 from django.contrib.auth.decorators import login_required
@@ -24,21 +24,25 @@ from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 
 def admin_home(request):
-    return render(request, 'admin/admin_home.html')
+    return render(request, 'blog_admin/blog_admin_home.html')
 
 def admin_posts(request):
     posts = Post.objects.all()
     context = {'posts': posts}
-    return render(request, 'admin/posts_panel.html', context)
+    return render(request, 'blog_admin/posts_panel.html', context)
 
 def admin_users(request):
-    return render(request, 'admin/users_panel.html')
+    return render(request, 'blog_admin/users_panel.html')
 
 def admin_categories(request):
-    return render(request, 'admin/categories_panel.html')
+     categories = Category.objects.all()
+     context = {'categories': categories}
+     return render(request, 'blog_admin/categories_panel.html',context)
 
 def admin_forbidden(request):
-    return render(request, 'admin/forbidden_panel.html')
+     words = Forbiddenword.objects.all()
+     context = {'words': words}
+     return render(request, 'blog_admin/forbidden_panel.html',context)
 # Create your views here.
 #def home(request):
     # Example of normal function below:
@@ -148,4 +152,11 @@ def del_cat(request, cat_id):
     if request.user.is_authenticated and request.user.is_superuser:
         category = category.objects.get(id=cat_id)
         category.delete()
-    return redirect('home')
+    return redirect('blog_admin/categories')
+
+
+def del_post(request, post_id):
+    if request.user.is_authenticated and request.user.is_superuser:
+        post = category.objects.get(id=post_id)
+        post.delete()
+    return redirect('blog_admin/posts')
