@@ -20,6 +20,14 @@
             height: auto !important;
             border-radius: .25rem !important;
         }
+
+            .card{
+             
+              
+                width: 600px;
+                background-color: #ecf0f1;
+
+            }
     </style>
 </head>
 
@@ -95,43 +103,12 @@
             </div>
             <div class="col-md-10">
                 {% block main_block %}
+
                 {% endblock %}
             </div>
         </div>
     </div>
 
     {% include 'blog_app/footer.html' %}
-</body>
-
-
-            article img{
-                max-width: 100% !important;
-                height: auto !important;
-                border-radius: .25rem!important;
-            }
-
-            .card{
-             
-              
-                width: 600px;
-                background-color: #ecf0f1;
-
-            }
-           
-
-            
-        </style>
-    </head>
-    <body>
-        {% include 'blog_app/header.html' %}
-        
-        <main class="container my-3">
-            {% block main_block %}
-            {% endblock %}
-        </main>
-        
-        {% include 'blog_app/footer.html' %}
-    </body>
-
 
 </html>
