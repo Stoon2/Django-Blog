@@ -3,6 +3,10 @@
   {
     display: none;
   }
+  .manage
+  {
+    display: none;
+  }
 </style>
 
 
@@ -19,10 +23,14 @@
         <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
         <a class="btn btn-outline-primary" href="{% url 'signup' %}">Sign-up</a>
       </div>
-       
+        <div class="manage">
+          <span><a style="font-size: 18px ;color:white;" href="{% url 'admin_home' %}">Manage blog</a></span>
+
+        </div>
+      
       <div  style="margin-left: 600px;" class="logged">
         <!-- <a href="{% url 'admin_home' %}">manage blog</a> -->
-        <span><a style="font-size: 18px ;color:white;" href="{% url 'admin_home' %}">Manage blog</a></span>
+        
         <span style="font-size: 18px ;color:white;">Hello,{{request.user}}<span>
         <span><a style="font-size: 18px ;color:white;" href="{% url 'logout' %}">Logout</a></span>
       </div>
@@ -31,8 +39,9 @@
     <script>
       notlogged=document.getElementsByClassName('notlogged')
       logged=document.getElementsByClassName('logged')
+      imanage=document.getElementsByClassName("manage")
       var data="{{request.user}}"
-      console.log(data)
+      var manage="{{request.user.is_superuser}}"
       if (data === 'AnonymousUser')
           {
             document.getElementsByClassName("logged")[0].style.display="none";
@@ -42,5 +51,12 @@
         {
           document.getElementsByClassName("notlogged")[0].style.display="none";
          }
+        if(manage === 'True')
+        {
+          document.getElementsByClassName("manage")[0].style.display="block";
+        }
+        
+
+        
      
     </script>
