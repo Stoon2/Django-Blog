@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from .models import Post,Category
 from django.views.generic import ListView, DetailView
-from .forms import CategoryForm 
+from .forms import CategoryForm, CreatePostForm 
 from django.contrib.auth.decorators import login_required
 from ast import Not
 from email import message
@@ -50,14 +50,31 @@ def admin_forbidden(request):
      words = Forbiddenword.objects.all()
      context = {'words': words}
      return render(request, 'blog_admin/forbidden_panel.html',context)
-# Create your views here.
-#def home(request):
-    # Example of normal function below:
-    ###################################
-    # object_user = ObjectModel.all()
-    # context = {'all_users': object_user}
-    # return render(request, 'blog_app/home.html', context)
-    #return render(request, 'blog_app/home.html')
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_del_post(request, post_id):
+    post_id = int(post_id)
+    try:
+        post_to_del = Post.objects.get(id = post_id)
+    except Post.DoesNotExist:
+        return redirect('admin_home')
+    post_to_del.delete()
+    return redirect('admin_posts')
+
+    # def del_post(request, post_id):
+    # if request.user.is_authenticated and request.user.is_superuser:
+    #     post = category.objects.get(id=post_id)
+    #     post.delete()
+    # return redirect('blog_admin/posts')
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_add_post(request):
+    post_form = CreatePostForm(request.POST)
+    context = {'post_form' : post_form}
+    if post_form.is_valid():
+        post_form.save()
+    return render(request, 'blog_admin/add_post.html', context)
+        
+
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog_app/post.html', {'post': post})
@@ -152,8 +169,3 @@ def del_cat(request, cat_id):
     return redirect('blog_admin/categories')
 
 
-def del_post(request, post_id):
-    if request.user.is_authenticated and request.user.is_superuser:
-        post = category.objects.get(id=post_id)
-        post.delete()
-    return redirect('blog_admin/posts')

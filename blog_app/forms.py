@@ -1,16 +1,9 @@
+
 from django import forms
-from .models import Category
-from django.forms import ModelForm
+from . models import Category, Post
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models  import User
-from dataclasses import fields
-from pyexpat import model
+from django.contrib.auth.models import User
 from re import U
-from django.forms import ModelForm
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models  import User
-import django
-import django
 
 
 class CategoryForm(forms.ModelForm):
@@ -19,11 +12,14 @@ class CategoryForm(forms.ModelForm):
         fields = ('name',)
 
 
-
-
-
-
 class CreateUserForm(UserCreationForm):
     class Meta:
         model=User
         fields = ('username','first_name','last_name','email','password1','password2')
+
+
+# Posts CRUD forms
+class CreatePostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('__all__')
