@@ -11,7 +11,7 @@ urlpatterns = [
     # path('add_category/', views.add_cat, name="add_cat"),
     # path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
 
-    path('del-post/<post_id>', views.del_post, name='del_post'),
+    path('del-post/<post_id>', views.admin_del_post, name='del_post'),
     path('add-comment' , views.comment , name = 'addcomment' ),
 
     
@@ -28,7 +28,7 @@ urlpatterns = [
     # Admin Post CRUD
     path('del-post/<post_id>', views.admin_del_post, name='del_post'),
     path('add-post', views.admin_add_post, name='add_post'),
-    path('add-category', views.admin_add_category, name="add_category"),
+    path('add-category/', views.admin_add_category, name='add_category'),
     path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
     # path('add_fWord', views.AddForbiddenWordForm, name='add_fWord')
     path('edit-post/<post_id>', views.admin_editPost, name='edit_post')

@@ -122,7 +122,6 @@ def post_detail(request, pk):
 # def home(request):
 
 def filterComment(commint):
-    
     wordList = []
     
     forbiddenWords = Forbiddenword.objects.all()
