@@ -30,9 +30,9 @@
       </div>
     </div>
     {% elif user.is_authenticated %}
-      <div>
-        <span style="font-size: 18px ;color:white;">Hello, {{request.user}}<span>
-        <span><a style="font-size: 18px ;color:white;" href="{% url 'logout' %}">Logout</a></span>
+      <div class="d-flex flex-wrap">
+        <span style="font-size: 18px; color:white;" class="">Hello, {{request.user}}<span>
+        <a class="btn btn-outline-primary" href="{% url 'logout' %}">Logout</a>
       </div>
     {% else %}
       <div class="col-md-3 text-end notlogged">
