@@ -22,7 +22,7 @@ class CreateUserForm(UserCreationForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('__all__')
+        fields = ('title', 'author', 'body', 'picture', 'categories')
 
 class AddCategoryForm(forms.ModelForm):
     class Meta:
