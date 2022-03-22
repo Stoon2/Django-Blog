@@ -10,8 +10,12 @@ urlpatterns = [
     path('signup', views.signup, name='signup'),
     path('add_category/', views.add_cat, name="add_cat"),
     path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
+
     path('del-post/<post_id>', views.del_post, name='del_post'),
     path('add-comment' , views.comment , name = 'addcomment' ),
+
+    
+
 
 
     # Admin Views
@@ -19,5 +23,9 @@ urlpatterns = [
     path('blog_admin/posts', views.admin_posts, name='admin_posts'),
     path('blog_admin/users', views.admin_users, name='admin_users'),
     path('blog_admin/forbidden', views.admin_forbidden, name='admin_forbidden'),
-    path('blog_admin/categories', views.admin_categories, name='admin_categories')
+    path('blog_admin/categories', views.admin_categories, name='admin_categories'),
+
+    # Admin Post CRUD
+    path('del-post/<post_id>', views.admin_del_post, name='del_post'),
+    path('add-post', views.admin_add_post, name='add_post'),
 ]

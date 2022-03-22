@@ -3,9 +3,10 @@ from unicodedata import category
 from urllib import response
 from xml.etree.ElementTree import Comment
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from .models import Post,Category
 from django.views.generic import ListView, DetailView
-from .forms import CategoryForm 
+from .forms import CategoryForm, CreatePostForm 
 from django.contrib.auth.decorators import login_required
 from ast import Not
 from django.http import HttpResponseRedirect
@@ -21,41 +22,67 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
+
 from django.utils import timezone
 from . import models as m
+
+from django.contrib.auth.decorators import user_passes_test
+
 
 from django.shortcuts import render
 from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_home(request):
     return render(request, 'blog_admin/blog_admin_home.html')
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_posts(request):
     posts = Post.objects.all()
     context = {'posts': posts}
     return render(request, 'blog_admin/posts_panel.html', context)
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_users(request):
     return render(request, 'blog_admin/users_panel.html')
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_categories(request):
      categories = Category.objects.all()
      context = {'categories': categories}
      return render(request, 'blog_admin/categories_panel.html',context)
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_forbidden(request):
      words = Forbiddenword.objects.all()
      context = {'words': words}
      return render(request, 'blog_admin/forbidden_panel.html',context)
-# Create your views here.
-#def home(request):
-    # Example of normal function below:
-    ###################################
-    # object_user = ObjectModel.all()
-    # context = {'all_users': object_user}
-    # return render(request, 'blog_app/home.html', context)
-    #return render(request, 'blog_app/home.html')
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_del_post(request, post_id):
+    post_id = int(post_id)
+    try:
+        post_to_del = Post.objects.get(id = post_id)
+    except Post.DoesNotExist:
+        return redirect('admin_home')
+    post_to_del.delete()
+    return redirect('admin_posts')
+
+    # def del_post(request, post_id):
+    # if request.user.is_authenticated and request.user.is_superuser:
+    #     post = category.objects.get(id=post_id)
+    #     post.delete()
+    # return redirect('blog_admin/posts')
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_add_post(request):
+    post_form = CreatePostForm(request.POST)
+    context = {'post_form' : post_form}
+    if post_form.is_valid():
+        post_form.save()
+    return render(request, 'blog_admin/add_post.html', context)
+        
+
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog_app/post.html', {'post': post})
@@ -150,6 +177,7 @@ def del_cat(request, cat_id):
     return redirect('blog_admin/categories')
 
 
+
 def del_post(request, post_id):
     if request.user.is_authenticated and request.user.is_superuser:
         post = category.objects.get(id=post_id)
@@ -160,3 +188,4 @@ def comment(request):
     c = m.Comment(username=request.user.username , body=request.POST['body'], post_id_id = request.POST['p_id'])
     c.save()
     return redirect('post-detail' , request.POST['p_id'] )
+
