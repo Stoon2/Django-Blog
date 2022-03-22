@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import HomeView, PostDetailView, add_cat
+from .views import HomeView, PostDetailView
 
 urlpatterns = [
     path('login', views.loginPG, name='login'),
@@ -8,8 +8,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('post/<int:pk>', PostDetailView.as_view(), name='post-detail'),
     path('signup', views.signup, name='signup'),
-    path('add_category/', views.add_cat, name="add_cat"),
-    path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
+   
     
 
 
@@ -23,4 +22,9 @@ urlpatterns = [
     # Admin Post CRUD
     path('del-post/<post_id>', views.admin_del_post, name='del_post'),
     path('add-post', views.admin_add_post, name='add_post'),
+    path('add-category', views.admin_add_category, name="add_category"),
+    path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
+    # path('add_fWord', views.AddForbiddenWordForm, name='add_fWord')
+    path('edit-post/<post_id>', views.admin_editPost, name='edit_post')
+
 ]

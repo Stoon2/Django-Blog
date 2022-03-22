@@ -16,7 +16,7 @@
                 <td>{{ post.title }}</td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.date_created }}</td>
-                <td><a class="btn btn-warning">Edit</a></td>
+                <td><a class="btn btn-warning" href= "{% url 'edit_post' post.id %}" >Edit</a></td>
                 <td><a class="btn btn-danger" href= "{% url 'del_post' post.id %}" >Delete</a></td>
             </tr>
             {% endfor %}

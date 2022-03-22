@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from .models import Post,Category
 from django.views.generic import ListView, DetailView
-from .forms import CategoryForm, CreatePostForm 
+from .forms import AddCategoryForm, AddForbiddenWordForm, CategoryForm, CreatePostForm 
 from django.contrib.auth.decorators import login_required
 from ast import Not
 from email import message
@@ -34,6 +34,7 @@ def admin_posts(request):
     posts = Post.objects.all()
     context = {'posts': posts}
     return render(request, 'blog_admin/posts_panel.html', context)
+
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_users(request):
@@ -72,7 +73,36 @@ def admin_add_post(request):
     context = {'post_form' : post_form}
     if post_form.is_valid():
         post_form.save()
+        return redirect('admin_posts')
+
     return render(request, 'blog_admin/add_post.html', context)
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_editPost(request, post_id):
+        post_id = int(post_id)
+        post = Post.objects.get(id = post_id)
+        form = CreatePostForm(instance=post)  
+        if request.method=='POST':
+            form = CreatePostForm(request.POST, instance=post)
+            # if form.is_valid():
+            #     form.save()
+            #     return redirect('all-admin_posts')
+            # else:
+            form = CategoryForm(instance=post)
+            context = {'post_form' : form}
+        return render(request, 'blog_admin/add_post.html', context)
+        # return redirect('admin_posts')
+
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_add_category(request):
+    category_form = AddCategoryForm(request.POST)
+    context = {'category_form' : category_form}
+    if  category_form.is_valid():
+        category_form.save()
+        return redirect('admin_categories')
+
+    return render(request, 'blog_admin/add_category.html', context)
         
 
 def post_detail(request, pk):
@@ -148,24 +178,36 @@ def signup(request):
         return render(request, 'blog_app/signup.html',context)
 
 
-def add_cat(request):
-    if request.user.is_authenticated and request.user.is_superuser :
-        form = CategoryForm()
-        if request.method == "POST":
-            form = CategoryForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('home')
-        context = {'form': form}
-        return render(request, 'blog_app/add_category.html', context)
-    else:
-         return redirect('home') 
+
 
 
 def del_cat(request, cat_id):
     if request.user.is_authenticated and request.user.is_superuser:
         category = category.objects.get(id=cat_id)
         category.delete()
+        # return redirect('blog-index')
     return redirect('blog_admin/categories')
 
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_add_forbiddenWord(request):
+    forbiddenWord_form = AddForbiddenWordForm(request.POST)
+    context = {'forbiddenWord_form' : forbiddenWord_form}
+    if forbiddenWord_form.is_valid():
+        forbiddenWord_form.save()
+    return render(request, 'blog_admin/add_post.html', context)
+
+
+
+    # def add_cat(request):
+#     if request.user.is_authenticated and request.user.is_superuser :
+#         form = CategoryForm()
+#         if request.method == "POST":
+#             form = CategoryForm(request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 return redirect('home')
+#         context = {'form': form}
+#         return render(request, 'blog_app/add_category.html', context)
+#     else:
+#          return redirect('home') 

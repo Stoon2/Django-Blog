@@ -1,6 +1,6 @@
 
 from django import forms
-from . models import Category, Post
+from . models import Category, Forbiddenword, Post
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from re import U
@@ -23,3 +23,15 @@ class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('__all__')
+
+class AddCategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ('__all__')
+
+
+class AddForbiddenWordForm(forms.ModelForm):
+    class Meta:
+        model = Forbiddenword
+        fields = ('__all__')
+
