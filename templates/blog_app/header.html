@@ -31,7 +31,7 @@
     </div>
     {% elif user.is_authenticated %}
       <div>
-        <span style="font-size: 18px ;color:white;">Hello,{{request.user}}<span>
+        <span style="font-size: 18px ;color:white;">Hello, {{request.user}}<span>
         <span><a style="font-size: 18px ;color:white;" href="{% url 'logout' %}">Logout</a></span>
       </div>
     {% else %}
