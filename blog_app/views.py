@@ -1,12 +1,15 @@
 from http.client import responses
 from unicodedata import category
 from urllib import response
+from xml.etree.ElementTree import Comment
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Post,Category
 from django.views.generic import ListView, DetailView
 from .forms import CategoryForm 
 from django.contrib.auth.decorators import login_required
 from ast import Not
+from django.http import HttpResponseRedirect
+
 from email import message
 from multiprocessing import context
 from pdb import post_mortem
@@ -18,6 +21,8 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
+from django.utils import timezone
+from . import models as m
 
 from django.shortcuts import render
 from .models import Post , Forbiddenword
@@ -150,3 +155,8 @@ def del_post(request, post_id):
         post = category.objects.get(id=post_id)
         post.delete()
     return redirect('blog_admin/posts')
+def comment(request):
+  
+    c = m.Comment(username=request.user.username , body=request.POST['body'], post_id_id = request.POST['p_id'])
+    c.save()
+    return redirect('post-detail' , request.POST['p_id'] )

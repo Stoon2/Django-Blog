@@ -11,6 +11,7 @@ urlpatterns = [
     path('add_category/', views.add_cat, name="add_cat"),
     path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
     path('del-post/<post_id>', views.del_post, name='del_post'),
+    path('add-comment' , views.comment , name = 'addcomment' ),
 
 
     # Admin Views
