@@ -1,6 +1,7 @@
 from http.client import responses
 from unicodedata import category
 from urllib import response
+from xml.etree.ElementTree import Comment
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from .models import Post,Category
@@ -8,6 +9,8 @@ from django.views.generic import ListView, DetailView
 from .forms import AddCategoryForm, AddForbiddenWordForm, CategoryForm, CreatePostForm 
 from django.contrib.auth.decorators import login_required
 from ast import Not
+from django.http import HttpResponseRedirect
+
 from email import message
 from multiprocessing import context
 from pdb import post_mortem
@@ -19,7 +22,12 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
+
+from django.utils import timezone
+from . import models as m
+
 from django.contrib.auth.decorators import user_passes_test
+
 
 from django.shortcuts import render
 from .models import Post , Forbiddenword
@@ -114,8 +122,9 @@ def post_detail(request, pk):
 # def home(request):
 
 def filterComment(commint):
+    
     wordList = []
-     
+    
     forbiddenWords = Forbiddenword.objects.all()
     
     for word in forbiddenWords.iterator():
@@ -129,7 +138,9 @@ def filterComment(commint):
             commint = commint.replace(wordList[i] , "****")
         if index12 >=0:
              commint = commint.replace(capital , "****")
-    return HttpResponse(commint)
+           
+    
+    return (commint)
      
     
 
@@ -211,3 +222,18 @@ def admin_add_forbiddenWord(request):
 #         return render(request, 'blog_app/add_category.html', context)
 #     else:
 #          return redirect('home') 
+
+# def del_post(request, post_id):
+#     if request.user.is_authenticated and request.user.is_superuser:
+#         post = category.objects.get(id=post_id)
+#         post.delete()
+#     return redirect('blog_admin/posts')
+def comment(request):
+    comm_body=request.POST['body']
+    comm_body = filterComment(comm_body)
+   
+  
+    comment = m.Comment(username=request.user.username , body=  comm_body, post_id_id = request.POST['p_id'])
+    comment.save()
+    return redirect('post-detail' , request.POST['p_id'] )
+

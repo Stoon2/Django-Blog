@@ -8,8 +8,14 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('post/<int:pk>', PostDetailView.as_view(), name='post-detail'),
     path('signup', views.signup, name='signup'),
-   
+    # path('add_category/', views.add_cat, name="add_cat"),
+    # path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
+
+    path('del-post/<post_id>', views.del_post, name='del_post'),
+    path('add-comment' , views.comment , name = 'addcomment' ),
+
     
+
 
 
     # Admin Views
