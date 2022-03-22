@@ -92,8 +92,9 @@ def post_detail(request, pk):
 # def home(request):
 
 def filterComment(commint):
+    
     wordList = []
-     
+    
     forbiddenWords = Forbiddenword.objects.all()
     
     for word in forbiddenWords.iterator():
@@ -107,7 +108,9 @@ def filterComment(commint):
             commint = commint.replace(wordList[i] , "****")
         if index12 >=0:
              commint = commint.replace(capital , "****")
-    return HttpResponse(commint)
+           
+    
+    return (commint)
      
     
 
@@ -184,8 +187,11 @@ def del_post(request, post_id):
         post.delete()
     return redirect('blog_admin/posts')
 def comment(request):
+    comm_body=request.POST['body']
+    comm_body = filterComment(comm_body)
+   
   
-    c = m.Comment(username=request.user.username , body=request.POST['body'], post_id_id = request.POST['p_id'])
-    c.save()
+    comment = m.Comment(username=request.user.username , body=  comm_body, post_id_id = request.POST['p_id'])
+    comment.save()
     return redirect('post-detail' , request.POST['p_id'] )
 
