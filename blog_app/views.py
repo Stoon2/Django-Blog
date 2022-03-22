@@ -86,19 +86,17 @@ def admin_add_post(request):
     return render(request, 'blog_admin/add_post.html', context)
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
-def admin_editPost(request, post_id):
+def admin_update_post(request, post_id):
         post_id = int(post_id)
         post = Post.objects.get(id = post_id)
         form = CreatePostForm(instance=post)  
         if request.method=='POST':
             form = CreatePostForm(request.POST, instance=post)
-            # if form.is_valid():
-            #     form.save()
-            #     return redirect('all-admin_posts')
-            # else:
-            form = CategoryForm(instance=post)
-            context = {'post_form' : form}
-        return render(request, 'blog_admin/add_post.html', context)
+            if form.is_valid():
+                form.save()
+                return redirect('admin_posts')
+        context = {'post_form' : form}
+        return render(request, 'blog_admin/edit_post.html', context)
         # return redirect('admin_posts')
 
 
