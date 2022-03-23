@@ -33,6 +33,7 @@ from django.shortcuts import render
 from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 from django.urls import reverse
+from django.db.models import F
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_home(request):
@@ -252,9 +253,8 @@ def admin_add_forbiddenWord(request):
 def comment(request):
     comm_body=request.POST['body']
     comm_body = filterComment(comm_body)
-   
-  
     comment = m.Comment(username=request.user.username , body=  comm_body, post_id_id = request.POST['p_id'])
     comment.save()
+    Post.objects.filter(id=request.POST['p_id']).update(comment_number=F('comment_number') + 1)
     return redirect('post-detail' , request.POST['p_id'] )
 
