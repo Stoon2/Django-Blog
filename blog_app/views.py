@@ -150,6 +150,13 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'blog_app/post.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(PostDetailView, self).get_context_data()
+        post = get_object_or_404(Post, id=self.kwargs['pk'])
+        total_likes = post.total_likes()
+        context["total_likes"] = total_likes
+        return context
+
 def LikeView(request, pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
     post.likes.add(request.user)

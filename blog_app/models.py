@@ -25,6 +25,10 @@ class Post(models.Model):
     def __str__(self):
         return self.title + ' | ' + str(self.author)
 
+    def total_likes(self):
+        return self.likes.count()
+
+
 class Forbiddenword(models.Model):
     name = models.CharField(max_length=25)
     def __str__(self):

@@ -25,6 +25,7 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-primary btn-sm" name="post_id" value="{{ post.id }}">
                 <i class="fa fa-thumbs-up">Like</i>
+                <span class="badge badge-light">{{ total_likes }}</span>
             </button>
         </form>
         
