@@ -14,32 +14,59 @@
             <h1>{{post.title}}</h1>
             <p class="text-muted">
                 Published {{ post.date_created }} by <strong>{{ post.author }}</strong>
+                
             </p>
         </div>
         <div class="article-body">
                 {{post.body|linebreaks}}
         </div>
-            <div>
-                    {% if not post.comments.all  %}
-                    No Comment yet
-                    {% else  %}
-
-                            {% for comm in post.comments.all %}
-                            
-                                <div class="card" >
-                                    <div class="card-body">
-                                        <p class="card-title"> published by: {{comm.username}}</p>
-                                        <p class="card-text">{{comm.body}}</p>
-                                    <span class="text-muted float-right"> {{comm.created_at}} </span>
-                                    </div>
-                                </div>
-                            
-                        
-                            {% endfor %}
-
-                    {% endif %}
             
-            </div>
+        {% if not post.comments.all  %}
+              <h1 class="comments-title">no Comments yet....... </h1>      
+        {% else  %}
+                    <h1 class="comments-title">Comments </h1>
+
+                {% for comm in post.comments.all %}
+                            
+                    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+                        <div class="container">
+                            <div class="be-comment-block">
+                                    
+                                    <div class="be-comment">
+                                            <div class="be-comment-content">
+                                                
+                                                    <span class="be-comment-name">
+                                                    {{comm.username}}
+                                                        </span>
+                                                    <span class="be-comment-time">
+                                                        <i class="fa fa-clock-o"></i>
+                                                        {{comm.created_at}}
+                                                    </span>
+
+                                                <p class="be-comment-text">
+                                                {{ comm.body}}
+                                                </p>
+                                            </div>
+                                    </div>
+                                
+                                
+                            </div>
+                        </div>
+                                            
+                        
+                {% endfor %}
+
+        {% endif %}
+
+                            <form  method="POST" action="{% url 'addcomment' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="p_id" value="{{ post.id }}">
+                        
+                            <textarea class="comm-body" rows="5" cols="50"  id="body" placeholder=" write your comment...... " name="body"></textarea>
+                            <button class="btn btn-success" type="submit"> Comment </button>
+                            </form>
+                           
+            
         
     </article>
     
