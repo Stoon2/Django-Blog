@@ -33,7 +33,7 @@
         <form action="{% url 'dislike_post' post.pk %}" method="POST">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger btn-sm" name="post_id" value="{{ post.id }}">
-                <i class="fa fa-thumbs-down"> DisLike</i>
+                <i class="fa fa-thumbs-down"> Dislike</i>
                 <span class="badge badge-light">{{ total_dislikes }}</span>
             </button>
         </form>
