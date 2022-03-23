@@ -154,11 +154,10 @@ class PostDetailView(DetailView):
         context = super(PostDetailView, self).get_context_data()
         post = get_object_or_404(Post, id=self.kwargs['pk'])
         total_likes = post.total_likes()
-        liked = False
-        if post.likes.filter(id=self.request.user.id).exists():
-            liked = True
+        total_dislikes = post.total_dislikes()
+        
         context["total_likes"] = total_likes
-        context["liked"] = liked
+        context["total_dislikes"] = total_dislikes
         return context
 
 def LikeView(request, pk):
@@ -168,8 +167,24 @@ def LikeView(request, pk):
         post.likes.remove(request.user)
         liked = False
     else:
+        if post.dislikes.filter(id=request.user.id).exists():
+            post.dislikes.remove(request.user)
         post.likes.add(request.user)
         liked = True
+
+    return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
+
+def DislikeView(request, pk):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    disliked = False
+    if post.dislikes.filter(id=request.user.id).exists():
+        post.dislikes.remove(request.user)
+        disliked = False
+    else:
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+        post.dislikes.add(request.user)
+        disliked = True
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 

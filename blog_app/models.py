@@ -18,6 +18,7 @@ class Post(models.Model):
     picture = models.ImageField(null=True, blank=True, upload_to="images/")
     categories = models.ManyToManyField(Category)
     likes = models.ManyToManyField(User, related_name='blog_posts')
+    dislikes = models.ManyToManyField(User, related_name='post_dislikes')
 
     class Meta:
         ordering = ('-date_created', )
@@ -27,6 +28,9 @@ class Post(models.Model):
 
     def total_likes(self):
         return self.likes.count()
+    
+    def total_dislikes(self):
+        return self.dislikes.count()
 
 
 class Forbiddenword(models.Model):
