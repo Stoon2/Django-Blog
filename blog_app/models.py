@@ -18,6 +18,7 @@ class Post(models.Model):
     picture = models.ImageField(null=True, blank=True, upload_to="images/")
     categories = models.ManyToManyField(Category)
     likes = models.ManyToManyField(User, related_name='blog_posts')
+    comment_number= models.IntegerField(default=0)
 
     class Meta:
         ordering = ('-date_created', )
