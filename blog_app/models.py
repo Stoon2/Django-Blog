@@ -19,6 +19,7 @@ class Post(models.Model):
     categories = models.ManyToManyField(Category)
     likes = models.ManyToManyField(User, related_name='blog_posts')
     dislikes = models.ManyToManyField(User, related_name='post_dislikes')
+    comment_number= models.IntegerField(default=0)
 
     class Meta:
         ordering = ('-date_created', )

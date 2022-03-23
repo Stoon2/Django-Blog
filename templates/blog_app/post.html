@@ -42,7 +42,7 @@
         {% if not post.comments.all  %}
               <h1 class="comments-title">no Comments yet....... </h1>      
         {% else  %}
-                    <h1 class="comments-title">Comments </h1>
+                    <h1 class="comments-title">Comments  {{ post.comment_number }} </h1>
 
                 {% for comm in post.comments.all %}
                             
