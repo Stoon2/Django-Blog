@@ -20,7 +20,14 @@
         <div class="article-body">
                 {{post.body|linebreaks}}
         </div>
-            
+        
+        <form action="{% url 'like_post' post.pk %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-sm" name="post_id" value="{{ post.id }}">
+                <i class="fa fa-thumbs-up">Like</i>
+            </button>
+        </form>
+        
         {% if not post.comments.all  %}
               <h1 class="comments-title">no Comments yet....... </h1>      
         {% else  %}

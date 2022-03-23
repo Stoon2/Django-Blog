@@ -32,6 +32,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
+from django.urls import reverse
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_home(request):
@@ -148,6 +149,11 @@ class HomeView(ListView):
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog_app/post.html'
+
+def LikeView(request, pk):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
 def loginPG(request):
     if request.user.is_authenticated:
