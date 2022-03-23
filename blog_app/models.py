@@ -17,6 +17,7 @@ class Post(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     picture = models.ImageField(null=True, blank=True, upload_to="images/")
     categories = models.ManyToManyField(Category)
+    likes = models.ManyToManyField(User, related_name='blog_posts')
 
     class Meta:
         ordering = ('-date_created', )
