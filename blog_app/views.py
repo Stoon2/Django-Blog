@@ -322,12 +322,17 @@ def del_cat(request, cat_id):
 @user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_add_forbiddenWord(request):
     forbiddenWord_form = AddForbiddenWordForm(request.POST)
-    context = {'forbiddenWord_form' : forbiddenWord_form}
+    context = {'forbidden_word' : forbiddenWord_form}
     if forbiddenWord_form.is_valid():
         forbiddenWord_form.save()
-    return render(request, 'blog_admin/add_post.html', context)
+        return redirect('admin_forbidden')
+    return render(request, 'blog_admin/add_forbidden.html', context)
 
-
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_del_forbiddenWord(request, forbidden_word_id):
+    forbidden_word = Forbiddenword.objects.get(id=forbidden_word_id)
+    forbidden_word.delete()
+    return redirect('admin_forbidden')
 
     # def add_cat(request):
 #     if request.user.is_authenticated and request.user.is_superuser :
