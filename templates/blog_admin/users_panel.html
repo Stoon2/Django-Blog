@@ -1,9 +1,45 @@
 {% extends 'blog_admin/base.html' %}
 
 {% block main_block %}
-
     <div class="container-fluid">
-        <h1>Manage Users</h1>
+        <h1>Manage users</h1>
+        <br>
+        
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Account Active Status</th>
+                <th>Staff Status</th>
+                <th>Super User Status</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.is_active }}</td>
+                <td>{{ user.is_staff }}</td>
+                <td>{{ user.is_superuser }}</td>
+                <td><a class="btn btn-warning" href= "{% url 'edit_user' user.id %}" >Edit</a></td>
+                <td><a class="btn btn-danger" href= "{% url 'del_user' user.id %}" >Delete</a></td>
+                {% if user.is_staff %}
+                    <td><a class="btn btn-warning" href= "{% url 'demote_user' user.id %}" >Demote</a></td>
+                {% elif user.is_superuser %}
+                    <td><a class="btn btn-success" href= "#" >Can't Update</a></td>
+                {% else %}
+                    <td><a class="btn btn-success" href= "{% url 'promote_user' user.id %}" >Promote</a></td>
+                {% endif %}
+                {% if user.is_active %}
+                    <td><a class="btn btn-danger" href= "{% url 'deactivate_user' user.id %}" >Deactivate Account</a></td>
+                {% else %}
+                    <td><a class="btn btn-success" href= "{% url 'activate_user' user.id %}" >Activate Account</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-
 {% endblock %}

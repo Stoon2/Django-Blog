@@ -33,5 +33,11 @@ urlpatterns = [
     path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
     # path('add_fWord', views.AddForbiddenWordForm, name='add_fWord')
     
-
+    # Admin Users CRUD
+    path('del-user/<user_id>', views.admin_del_user, name='del_user'),
+    path('edit-user/<user_id>', views.admin_edit_user, name='edit_user'),
+    path('promote-user/<user_id>', views.admin_promote_user, name='promote_user'),
+    path('demote-user/<user_id>', views.admin_demote_user, name='demote_user'),
+    path('deactivate-user/<user_id>', views.admin_deactivate_user, name='deactivate_user'),
+    path('activate-user/<user_id>', views.admin_activate_user, name='activate_user'),
 ]

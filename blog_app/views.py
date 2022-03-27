@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from .models import Post,Category
 from django.views.generic import ListView, DetailView
-from .forms import AddCategoryForm, AddForbiddenWordForm, CategoryForm, CreatePostForm 
+from .forms import AddCategoryForm, AddForbiddenWordForm, CategoryForm, CreatePostForm, EditUserForm 
 from django.contrib.auth.decorators import login_required
 from ast import Not
 from django.http import HttpResponseRedirect
@@ -17,6 +17,7 @@ from pdb import post_mortem
 from pickle import NONE
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
@@ -111,7 +112,88 @@ def admin_add_category(request):
         return redirect('admin_categories')
 
     return render(request, 'blog_admin/add_category.html', context)
-        
+
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_users(request):
+    users = User.objects.all()
+    context = {'users': users}
+    return render(request, 'blog_admin/users_panel.html', context)
+
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_del_user(request, user_id):
+    user_id = int(user_id)
+    try:
+        user_to_del = User.objects.get(id = user_id)
+    except User.DoesNotExist:
+        return redirect('admin_home')
+    user_to_del.delete()
+    return redirect('admin_users')
+
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_edit_user(request, user_id):
+    user_id = int(user_id)
+    user = User.objects.get(id = user_id)
+    form = EditUserForm(instance=user)  
+    print(user)
+    if request.method=='POST':
+        form = EditUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_users')
+    context = {'user_form' : form}
+    return render(request, 'blog_admin/edit_user.html', context)
+
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_promote_user(request, user_id):
+    user_id = int(user_id)
+    try:
+        user = User.objects.get(id = user_id)
+    except User.DoesNotExist:
+        return redirect('admin_home')
+    user.is_staff = True
+    user.is_admin = True
+    user.save()
+    return redirect('admin_users')
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_demote_user(request, user_id):
+    user_id = int(user_id)
+    try:
+        user = User.objects.get(id = user_id)
+    except User.DoesNotExist:
+        return redirect('admin_home')
+    user.is_staff = False
+    user.is_admin = False
+    user.save()
+    return redirect('admin_users')
+
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_deactivate_user(request, user_id):
+    user_id = int(user_id)
+    try:
+        user = User.objects.get(id = user_id)
+    except User.DoesNotExist:
+        return redirect('admin_home')
+    user.is_active = False
+    user.save()
+    return redirect('admin_users')
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_activate_user(request, user_id):
+    user_id = int(user_id)
+    try:
+        user = User.objects.get(id = user_id)
+    except User.DoesNotExist:
+        return redirect('admin_home')
+    user.is_active = True
+    user.save()
+    return redirect('admin_users')
+
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
