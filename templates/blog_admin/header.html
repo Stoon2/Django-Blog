@@ -25,6 +25,7 @@
     <div class="d-flex flex-row justify-content-between">
       <span class="text-white">Hello, {{request.user}}<span>
       <div class="d-flex flex-row justify-content-evenly">
+        <a class="btn btn-outline-primary" href="{% url 'home' %}">Home</a></span>
         <a class="btn btn-outline-primary" href="{% url 'admin_home' %}">Manage blog</a></span>
         <a class="btn btn-outline-primary" href="{% url 'logout' %}">Logout</a></span>
       </div>
