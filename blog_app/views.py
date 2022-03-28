@@ -71,6 +71,18 @@ def admin_del_post(request, post_id):
         return redirect('admin_home')
     post_to_del.delete()
     return redirect('admin_posts')
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_del_category(request, cat_id):
+    post_id = int(post_id)
+    try:
+        category_to_del = Category.objects.get(id = cat_id)
+    except Category.DoesNotExist:
+        return redirect('admin_home')
+    category_to_del.delete()
+    return redirect('admin_categories')
+
+
+
 
     # def del_post(request, post_id):
     # if request.user.is_authenticated and request.user.is_superuser:
@@ -101,6 +113,21 @@ def admin_update_post(request, post_id):
         return render(request, 'blog_admin/edit_post.html', context)
         # return redirect('admin_posts')
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_edit_category(request, cat_id):
+        cat_id = int(cat_id)
+        category = category.objects.get(id = cat_id)
+        form = AddCategoryForm(instance=category)  
+        if request.method=='POST':
+            form = AddCategoryForm(request.POST, instance=category)
+            if form.is_valid():
+                form.save()
+                return redirect('admin_categories')
+        context = {'category_form' : form}
+        return render(request, 'blog_admin/edit_category.html', context)
+
+
+
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_add_category(request):
@@ -112,6 +139,26 @@ def admin_add_category(request):
 
     return render(request, 'blog_admin/add_category.html', context)
         
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_add_forbiddenWord(request):
+    forbiddenWord_form = AddForbiddenWordForm(request.POST)
+    context = {'forbiddenWord_form' : forbiddenWord_form}
+    if forbiddenWord_form.is_valid():
+        forbiddenWord_form.save()
+        return redirect('admin_forbidden')
+
+    return render(request, 'blog_admin/add_forbidden.html', context)
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_del_forbiddenWord(request, forbiddenWord_id):
+    post_id = int(post_id)
+    try:
+        forbiddenWord_to_del = Forbiddenword.objects.get(id = forbiddenWord_id)
+    except Forbiddenword.DoesNotExist:
+        return redirect('admin_home')
+    forbiddenWord_to_del.delete()
+    return redirect('admin_forbidden')
+
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -229,42 +276,7 @@ def signup(request):
 
 
 
-def del_cat(request, cat_id):
-    if request.user.is_authenticated and request.user.is_superuser:
-        category = category.objects.get(id=cat_id)
-        category.delete()
-        # return redirect('blog-index')
-    return redirect('blog_admin/categories')
-
-
-@user_passes_test(lambda u:u.is_staff, login_url='login')
-def admin_add_forbiddenWord(request):
-    forbiddenWord_form = AddForbiddenWordForm(request.POST)
-    context = {'forbiddenWord_form' : forbiddenWord_form}
-    if forbiddenWord_form.is_valid():
-        forbiddenWord_form.save()
-    return render(request, 'blog_admin/add_post.html', context)
-
-
-
-    # def add_cat(request):
-#     if request.user.is_authenticated and request.user.is_superuser :
-#         form = CategoryForm()
-#         if request.method == "POST":
-#             form = CategoryForm(request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 return redirect('home')
-#         context = {'form': form}
-#         return render(request, 'blog_app/add_category.html', context)
-#     else:
-#          return redirect('home') 
-
-# def del_post(request, post_id):
-#     if request.user.is_authenticated and request.user.is_superuser:
-#         post = category.objects.get(id=post_id)
-#         post.delete()
-#     return redirect('blog_admin/posts')
+   
 def comment(request):
     comm_body=request.POST['body']
     comm_body = filterComment(comm_body)

@@ -17,11 +17,12 @@
     <tr>
         <td>{{ word.name }}</td>
         <td><button class="btn btn-warning">Edit</button></td>
-        <td><button class="btn btn-danger">Delete</button></td>
+        <!-- <td><button class="btn btn-danger">Delete</button></td> -->
+        <td><a class="btn btn-danger" href= "{% url 'del_fword' word.id %}" >Delete</a></td>
 
     </tr>
     {% endfor %}
 </table>
-<button class="btn btn-success" href="{% url 'add_fWord' %}">Add Frobidden word</button>
+<a class="btn btn-success" href="{% url 'add_fWord' %}">Add Forbidden Word</a>
 </div>
 {% endblock %}

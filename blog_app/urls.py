@@ -30,8 +30,14 @@ urlpatterns = [
     
     # Admin Categories CRUD
     path('add-category/', views.admin_add_category, name='add_category'),
-    path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
-    # path('add_fWord', views.AddForbiddenWordForm, name='add_fWord')
+    path('del-cat/<cat_id>', views.admin_del_category, name='del_cat'),
+    path('edit-cat/<cat_id>', views.admin_edit_category, name='edit_cat'),
+
+    # Admin ForbiddenWord CRUD
+
+    path('add_fWord', views.admin_add_forbiddenWord, name='add_fWord'),
+    path('del-fword/<forbiddenWord_id>', views.admin_del_forbiddenWord, name='del_fword')
+
     
 
 ]
