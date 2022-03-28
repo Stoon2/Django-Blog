@@ -17,6 +17,10 @@ class CreateUserForm(UserCreationForm):
         model=User
         fields = ('username','first_name','last_name','email','password1','password2')
 
+class EditUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email')
 
 # Posts CRUD forms
 class CreatePostForm(forms.ModelForm):

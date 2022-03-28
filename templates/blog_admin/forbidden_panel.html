@@ -16,6 +16,7 @@
     {% for word in words %}
     <tr>
         <td>{{ word.name }}</td>
+<<<<<<< HEAD
         <td><button class="btn btn-warning">Edit</button></td>
         <!-- <td><button class="btn btn-danger">Delete</button></td> -->
         <td><a class="btn btn-danger" href= "{% url 'del_fword' word.id %}" >Delete</a></td>
@@ -24,5 +25,12 @@
     {% endfor %}
 </table>
 <a class="btn btn-success" href="{% url 'add_fWord' %}">Add Forbidden Word</a>
+=======
+        <td><a class="btn btn-danger" href="{% url 'del_fWord' word.id %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+<a class="btn btn-success" href="{% url 'add_fWord' %}">Add Word</a>
+>>>>>>> 910f829462ad945f71d2fcf0d553a1783553a40b
 </div>
 {% endblock %}
