@@ -1,44 +1,189 @@
 {% extends 'blog_app/base.html' %}
 
 {% block main_block %}
-    {% for post in object_list %}
-    <div class="card mb-3">
-        <div class="card-body">
-            <div class="row g-0">
-                <div class="col-md-5">
-                    <div class="ratio ratio-16x9">
-                        {% if not post.picture %}
-                        <img src="https://via.placeholder.com/1280x720" class="rounded" alt="{{post.title}}">
-                        {% else %}
-                        <img src="{{ post.picture.url }}" class="rounded" alt="{{post.title}}">
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="col-md-7 ps-md-3 pt-3 pt-md-0 d-flex flex-column">
-                    
-                        <h2 class="card-title h5">
+
+<style>
+    .wrapper {
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+        margin-right: 25px;
+    }
+    .wrapper {
+        display: flex;
+        align-items: stretch;
+    }
+
+    #sidebar {
+        min-width: 250px;
+        max-width: 250px;
+    }
+
+    #sidebar.active {
+        margin-left: -250px;
+    }
+
+    #sidebar {
+        min-width: 250px;
+        max-width: 250px;
+        min-height: 100vh;
+    }
+
+    a[data-toggle="collapse"] {
+        position: relative;
+    }
+
+    .dropdown-toggle::after {
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+    }
+
+    @media (max-width: 768px) {
+        #sidebar {
+            margin-left: -250px;
+            
+        }
+        #sidebar.active {
+            margin-left: -25px;
+            margin-right: 25px;
+        }
+    }
+    @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #fafafa;
+    }
+
+    p {
+        font-family: 'Poppins', sans-serif;
+        font-size: 1.1em;
+        font-weight: 300;
+        line-height: 1.7em;
+        color: #999;
+    }
+
+    a, a:hover, a:focus {
+        color: inherit;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    #sidebar {
+        /* don't forget to add all the previously mentioned styles here too */
+        background: #212529;
+        color: #fff;
+        transition: all 0.3s;
+    }
+
+    #sidebar .sidebar-header {
+        padding: 20px;
+        background: #212529;
+    }
+
+    #sidebar ul.components {
+        padding: 20px 0;
+        border-bottom: 1px solid #47748b;
+    }
+
+    #sidebar ul p {
+        color: #fff;
+        padding: 10px;
+    }
+
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
+    #sidebar ul li a:hover {
+        color: #0D6EFD;
+        background: #fff;
+    }
+
+    #sidebar ul li.active > a, a[aria-expanded="true"] {
+        color: #fff;
+        background: #6d7fcc;
+    }
+    ul ul a {
+        font-size: 0.9em !important;
+        padding-left: 30px !important;
+        background: #6d7fcc;
+    }
+
+</style>
+
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Categories</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li>
+                <a href="#" data-toggle="collapse" aria-expanded="false">Home</a>
+            </li>
+            {% for category in categories %}
+            <li>
+                <a href="#">{{ category }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+        <!-- Sidebar Button -->
+
+        {% for post in posts %}
+        <div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <div class="ratio ratio-16x9">
+                                {% if not post.picture %}
+                                <img src="https://via.placeholder.com/1280x720" class="rounded" alt="{{post.title}}">
+                                {% else %}
+                                <img src="{{ post.picture.url }}" class="rounded" alt="{{post.title}}">
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-7 ps-md-3 pt-3 pt-md-0 d-flex flex-column">
+                            <h2 class="card-title h5">
                                 <a href="{% url 'post-detail' post.pk %}">
                                 {{ post.title }}
                                 </a>
-                        </h2>
-                        <div class="text-muted">
-                            <small>
-                                Published {{ post.date_created }} by <strong>{{ post.author }}</strong>
-                            </small>
+                            </h2>
+                            <div class="text-muted">
+                                <small>
+                                    Published {{ post.date_created }} by <strong>{{ post.author }}</strong>
+                                </small>
+                            </div>
+                            <p class="card-text mb-auto py-2">{{ post.body|safe|striptags|truncatechars:100 }}</p>
+                            <div>
+                                <a href="{% url 'post-detail' post.pk %}" class="btn btn-primary btn-sm">Read more</a>
+                            </div>
                         </div>
-                        
-                        
-                        <p class="card-text mb-auto py-2">{{ post.body|safe|striptags|truncatechars:100 }}</p>
-                        
-                    
-               
-                        <div>
-                            <a href="{% url 'post-detail' post.pk %}" class="btn btn-primary btn-sm">Read more</a>
-                        </div>
-                
+                    </div>
                 </div>
             </div>
         </div>
+        {% endfor %}
+        <!-- We'll fill this with dummy content -->
     </div>
-    {% endfor %}
+
+</div>
+<script>
+    btnSidebar = document.getElementById("sidebarCollapse");
+    btnSidebar.addEventListener('click', ()=>{
+        document.getElementById("sidebar").classList.toggle('active');
+    });
+</script>
 {% endblock %}
+    

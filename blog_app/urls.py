@@ -5,7 +5,7 @@ from .views import HomeView, PostDetailView
 urlpatterns = [
     path('login', views.loginPG, name='login'),
     path('logout', views.logoutUser, name='logout'),
-    path('', HomeView.as_view(), name='home'),
+    path('', views.HomeView, name='home'),
     path('post/<int:pk>', PostDetailView.as_view(), name='post-detail'),
     path('like/<int:pk>', views.LikeView, name='like_post'),
     path('dislike/<int:pk>', views.DislikeView, name='dislike_post'),

@@ -25,17 +25,29 @@
     <div class="d-flex flex-row justify-content-between">
       <span class="text-white">Hello, {{request.user}}<span>
       <div class="d-flex flex-row justify-content-evenly">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+          <i class="fas fa-align-left"></i>
+          <span>Show Categories</span>
+        </button>
         <a class="btn btn-outline-primary" href="{% url 'admin_home' %}">Manage blog</a></span>
         <a class="btn btn-outline-primary" href="{% url 'logout' %}">Logout</a></span>
       </div>
     </div>
     {% elif user.is_authenticated %}
       <div class="d-flex flex-wrap">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+          <i class="fas fa-align-left"></i>
+          <span>Show Categories</span>
+        </button>
         <span style="font-size: 18px; color:white;" class="">Hello, {{request.user}}<span>
         <a class="btn btn-outline-primary" href="{% url 'logout' %}">Logout</a>
       </div>
     {% else %}
       <div class="col-md-3 text-end notlogged">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+          <i class="fas fa-align-left"></i>
+          <span>Show Categories</span>
+        </button>
         <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
         <a class="btn btn-outline-primary" href="{% url 'signup' %}">Sign-up</a>
       </div>

@@ -223,11 +223,15 @@ def filterComment(commint):
     
     return (commint)
      
-    
+def HomeView(request):
+    posts = Post.objects.all()
+    categories = Category.objects.all()
+    context = {'posts': posts, 'categories': categories}
+    return render(request, 'blog_app/home.html', context)
 
-class HomeView(ListView):
-    model = Post
-    template_name = 'blog_app/home.html'
+# class HomeView(ListView):
+#     model = Post, Category
+#     template_name = 'blog_app/home.html'
 
 class PostDetailView(DetailView):
     model = Post
