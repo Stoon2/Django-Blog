@@ -1,8 +1,9 @@
 {% extends 'blog_app/base.html' %}
 
 {% block main_block %}
-
-    <article>
+    {% if not post.picture %}
+    {% endif %}
+    <article style="width: 80%; margin: 50px;">
         <figure>
             {% if not post.picture %}
             <img src="https://via.placeholder.com/1280x720" class="rounded" alt="{{post.title}}">
@@ -20,7 +21,6 @@
         <div class="article-body">
                 {{post.body|linebreaks}}
         </div>
-
         {% if user.is_authenticated %}
         <form action="{% url 'like_post' post.pk %}" method="POST">
             {% csrf_token %}
@@ -29,7 +29,7 @@
                 <span class="badge badge-light">{{ total_likes }}</span>
             </button>
         </form>
-
+    
         <form action="{% url 'dislike_post' post.pk %}" method="POST">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger btn-sm" name="post_id" value="{{ post.id }}">
@@ -38,55 +38,52 @@
             </button>
         </form>
         {% endif %}
-        
-        {% if not post.comments.all  %}
-              <h1 class="comments-title">no Comments yet....... </h1>      
-        {% else  %}
-                    <h1 class="comments-title">Comments  {{ post.comment_number }} </h1>
-
-                {% for comm in post.comments.all %}
-                            
-                    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-                        <div class="container">
-                            <div class="be-comment-block">
-                                    
-                                    <div class="be-comment">
-                                            <div class="be-comment-content">
-                                                
-                                                    <span class="be-comment-name">
-                                                    {{comm.username}}
-                                                        </span>
-                                                    <span class="be-comment-time">
-                                                        <i class="fa fa-clock-o"></i>
-                                                        {{comm.created_at}}
-                                                    </span>
-
-                                                <p class="be-comment-text">
-                                                {{ comm.body}}
-                                                </p>
-                                            </div>
-                                    </div>
-                                
-                                
-                            </div>
-                        </div>
-                                            
-                        
-                {% endfor %}
-
-        {% endif %}
-
-                            <form  method="POST" action="{% url 'addcomment' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="p_id" value="{{ post.id }}">
-                        
-                            <textarea class="comm-body" rows="5" cols="50"  id="body" placeholder=" write your comment...... " name="body"></textarea>
-                            <button class="btn btn-success" type="submit"> Comment </button>
-                            </form>
-                           
-            
-        
     </article>
-    
-   
+    </div>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+                {% if not post.comments.all %}
+                    <div class="headings d-flex justify-content-between align-items-center mb-3">
+                        <h5>No Comments</h5>
+                    </div>
+                {% else  %}
+                <div class="headings d-flex justify-content-between align-items-center mb-3">
+                    <h5>Comments {{ post.comment_number }}</h5>
+                </div>
+                {% for comm in post.comments.all %}
+                    <div class="card p-3">
+                        <div class="d-flex justify-content-between align-items-center card-body">
+                            <div class="user d-flex flex-row align-items-center">
+                                <span>
+                                    <small class="font-weight-bold text-primary">
+                                        {{comm.username}}
+                                    </small>
+                                    <div class="comment-text" style="word-wrap: break-word; word-break: break-word; display: flex; width: 50%;">
+                                        <small class="font-weight-bold card-text">
+                                            {{ comm.body}}
+                                        </small>
+                                    </div>
+                                </span>
+                            </div>
+                            <small>
+                                <div class="comment-date" style="display: flex;">
+                                    {{comm.created_at}}
+                                </div>
+                            </small>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="comment-submit" style="justify-content: center; align-items: center; display: flex; margin: 20px;">
+        <form  method="POST" action="{% url 'addcomment' %}">
+            {% csrf_token %}
+                <input type="hidden" name="p_id" value="{{ post.id }}">
+                <textarea class="comm-body" rows="5" cols="50" placeholder=" write your comment...... " name="body"></textarea>
+                <button class="btn btn-success" type="submit"> Comment </button>
+        </form>
+    </div>
 {% endblock %}
