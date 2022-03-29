@@ -123,15 +123,20 @@
         <div class="sidebar-header">
             <h3>Categories</h3>
         </div>
-
         <ul class="list-unstyled components">
             <li>
-                <a href="#" data-toggle="collapse" aria-expanded="false">Home</a>
+                <a href="{% url 'home' %}" data-toggle="collapse" aria-expanded="false">Home</a>
             </li>
             {% for category in categories %}
-            <li>
-                <a href="{% url 'display_category' category.id %}">{{ category }}</a>
-            </li>
+            {% if category.id == picked_category %}
+                <li>
+                    <a aria-expanded="true" href="{% url 'display_category' category.id %}">{{ category }}</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{% url 'display_category' category.id %}">{{ category }}</a>
+                </li>
+            {% endif %}
             {% endfor %}
         </ul>
     </nav>

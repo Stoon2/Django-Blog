@@ -242,6 +242,18 @@ def admin_activate_user(request, user_id):
     return redirect('admin_users')
 
 
+def display_posts_category(request, category_id):
+    category_id = int(category_id)
+    context = {}
+    try:
+        # category_requested = Category.objects.get(id=category_id)
+        posts = Post.objects.filter(categories__id=category_id)
+        categories = Category.objects.all()
+    except:
+        return redirect('home')
+    context = {'posts': posts, 'categories': categories, 'picked_category': category_id}
+    return render(request, 'blog_app/categories_home.html', context)
+
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog_app/post.html', {'post': post})
@@ -270,11 +282,15 @@ def filterComment(commint):
     
     return (commint)
      
-    
+def HomeView(request):
+    posts = Post.objects.all()
+    categories = Category.objects.all()
+    context = {'posts': posts, 'categories': categories}
+    return render(request, 'blog_app/home.html', context)
 
-class HomeView(ListView):
-    model = Post
-    template_name = 'blog_app/home.html'
+# class HomeView(ListView):
+#     model = Post, Category
+#     template_name = 'blog_app/home.html'
 
 class PostDetailView(DetailView):
     model = Post
