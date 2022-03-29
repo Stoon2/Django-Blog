@@ -359,12 +359,12 @@ def signup(request):
 
 
    
-def del_cat(request, cat_id):
-    if request.user.is_authenticated and request.user.is_superuser:
-        category = category.objects.get(id=cat_id)
-        category.delete()
-        # return redirect('blog-index')
-    return redirect('blog_admin/categories')
+# def del_cat(request, cat_id):
+#     if request.user.is_authenticated and request.user.is_superuser:
+#         category = category.objects.get(id=cat_id)
+#         category.delete()
+#         # return redirect('blog-index')
+#     return redirect('blog_admin/categories')
 
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')

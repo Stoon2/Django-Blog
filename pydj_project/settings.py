@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog_app',
-    'crispy_forms'
+    'crispy_forms',
+    'taggit'
 ]
 
 # Needed for crispy forms to work
