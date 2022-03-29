@@ -22,21 +22,26 @@
                 {{post.body|linebreaks}}
         </div>
         {% if user.is_authenticated %}
-        <form action="{% url 'like_post' post.pk %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary btn-sm" name="post_id" value="{{ post.id }}">
-                <i class="fa fa-thumbs-up"> Like</i>
-                <span class="badge badge-light">{{ total_likes }}</span>
-            </button>
-        </form>
-    
-        <form action="{% url 'dislike_post' post.pk %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger btn-sm" name="post_id" value="{{ post.id }}">
-                <i class="fa fa-thumbs-down"> Dislike</i>
-                <span class="badge badge-light">{{ total_dislikes }}</span>
-            </button>
-        </form>
+        <div class="d-flex flex-row">
+            <div class="mx-1">
+                <form action="{% url 'like_post' post.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-sm" name="post_id" value="{{ post.id }}">
+                        <i class="fa fa-thumbs-up"> Like</i>
+                        <span class="badge badge-light">{{ total_likes }}</span>
+                    </button>
+                </form>
+            </div>
+            <div class="mx-1">
+                <form action="{% url 'dislike_post' post.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm" name="post_id" value="{{ post.id }}">
+                        <i class="fa fa-thumbs-down"> Dislike</i>
+                        <span class="badge badge-light">{{ total_dislikes }}</span>
+                    </button>
+                </form>
+            </div>
+        </div>
         {% endif %}
     </article>
     </div>
