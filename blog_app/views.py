@@ -1,4 +1,6 @@
 from http.client import responses
+import os
+from threading import active_count, activeCount
 from unicodedata import category
 from urllib import response
 from xml.etree.ElementTree import Comment
@@ -8,9 +10,8 @@ from .models import Post,Category
 from django.views.generic import ListView, DetailView
 from .forms import AddCategoryForm, AddForbiddenWordForm, CategoryForm, CreatePostForm, EditUserForm 
 from django.contrib.auth.decorators import login_required
-from ast import Not
+from ast import If, Not
 from django.http import HttpResponseRedirect
-
 from email import message
 from multiprocessing import context
 from pdb import post_mortem
@@ -23,13 +24,9 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
-
 from django.utils import timezone
 from . import models as m
-
 from django.contrib.auth.decorators import user_passes_test
-
-
 from django.shortcuts import render
 from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
@@ -339,6 +336,8 @@ def DislikeView(request, pk):
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
+
+
 def loginPG(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -346,12 +345,21 @@ def loginPG(request):
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
-            user = authenticate(request, username=username,password=password)
+            user = authenticate(request, username=username, password=password)
+            user2 = authenticate(request, password=password)
             if user is not None:
                 login(request,user)
                 return redirect('home')
+            
+            try:   
+                User.objects.get(username= username)  
+            except User.DoesNotExist:
+                messages.info(request," incorrect Username Or Password ")
             else:
-                messages.info(request,"Username Or Password incorrect")
+                messages.info(request,"Blockebed Account, Plz contact with admins") 
+
+
+            
 
         return render(request, 'blog_app/login.html')
 
@@ -371,6 +379,7 @@ def signup(request):
                 form.save()
                 user =form.cleaned_data.get('username')
                 messages.success(request,'Account created for '+user)
+            
                 return redirect('login')
         context ={'form':form}
         return render(request, 'blog_app/signup.html',context)
