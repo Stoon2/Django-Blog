@@ -354,7 +354,7 @@ def loginPG(request):
             try:   
                 User.objects.get(username= username)  
             except User.DoesNotExist:
-                messages.info(request,"Username Or Password incorrect")
+                messages.info(request," incorrect Username Or Password ")
             else:
                 messages.info(request,"Blockebed Account, Plz contact with admins") 
 
