@@ -22,7 +22,7 @@
                 {{post.body|linebreaks}}
                 <p>Common Tags: 
                     {% for tag in common_tags %}
-                        <a href="#" class="badge badge-success">{{tag}}</a>
+                        <a href="#" class="badge badge-success text-dark">{{tag}}</a>
                         <!-- <span class="badge badge-light">{{ tag }}</span> -->
 
                     {% endfor %}
@@ -71,18 +71,18 @@
                                     <small class="font-weight-bold text-primary">
                                         {{comm.username}}
                                     </small>
-                                    <div class="comment-text" style="word-wrap: break-word; word-break: break-word; display: flex; width: 50%;">
+                                    <small>
+                                        <div class="comment-date" style="display: flex;">
+                                            {{comm.created_at}}
+                                        </div>
+                                    </small>
+                                    <div class="comment-text" style="word-wrap: break-word; word-break: break-word; display: flex; width: 100%;">
                                         <small class="font-weight-bold card-text">
                                             {{ comm.body}}
                                         </small>
                                     </div>
                                 </span>
                             </div>
-                            <small>
-                                <div class="comment-date" style="display: flex;">
-                                    {{comm.created_at}}
-                                </div>
-                            </small>
                         </div>
                     </div>
                 {% endfor %}

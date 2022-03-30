@@ -168,7 +168,7 @@
                             <p class="card-text mb-auto py-2">{{ post.body|safe|striptags|truncatechars:100 }}</p>
                             <div style="display:flex">
                                 {% for tag in post.tags.all %}
-                                <a href="{% url 'tagged' tag.slug %}" class=" badge badge-info">#{{ tag }}</a>
+                                <a href="{% url 'tagged' tag.slug %}" class=" badge badge-info text-dark">#{{ tag }}</a>
                                 {% endfor %}
                             </div>
                             <div>
