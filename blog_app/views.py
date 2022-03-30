@@ -344,7 +344,10 @@ def DislikeView(request, pk):
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
-
+def SubscribeView(request, pk):
+    category = get_object_or_404(Category, id=request.POST.get('category_id'))
+    category.subscriptions.add(request.user)
+    return redirect('home')
 
 def loginPG(request):
     if request.user.is_authenticated:
