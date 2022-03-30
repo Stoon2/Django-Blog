@@ -35,6 +35,8 @@ from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 from django.urls import reverse
 from django.db.models import F
+from taggit.models import Tag
+
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_home(request):
@@ -301,10 +303,13 @@ class PostDetailView(DetailView):
         post = get_object_or_404(Post, id=self.kwargs['pk'])
         total_likes = post.total_likes()
         total_dislikes = post.total_dislikes()
-        
+        common_tags = post.tags.most_common()[:4]
         context["total_likes"] = total_likes
         context["total_dislikes"] = total_dislikes
+        context["common_tags"] = common_tags
         return context
+
+   
 
 def LikeView(request, pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -370,7 +375,16 @@ def signup(request):
         context ={'form':form}
         return render(request, 'blog_app/signup.html',context)
 
-
+def tagged(request, slug):
+        tag = get_object_or_404(Tag, slug=slug)
+        common_tags = Post.tags.most_common()[:4]
+        posts = Post.objects.filter(tags=tag)
+        context = {
+            'tag':tag,
+            'common_tags':common_tags,
+            'posts':posts,
+        }
+        return render(request, 'blog_app/home.html', context)
 
 
 

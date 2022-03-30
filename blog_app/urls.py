@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import HomeView, PostDetailView
+from .views import HomeView, PostDetailView,tagged
 
 urlpatterns = [
     path('login', views.loginPG, name='login'),
@@ -50,5 +50,7 @@ urlpatterns = [
     path('promote-user/<user_id>', views.admin_promote_user, name='promote_user'),
     path('demote-user/<user_id>', views.admin_demote_user, name='demote_user'),
     path('deactivate-user/<user_id>', views.admin_deactivate_user, name='deactivate_user'),
-    path('activate-user/<user_id>', views.admin_activate_user, name='activate_user')
-]
+    path('activate-user/<user_id>', views.admin_activate_user, name='activate_user'),
+    path('tag/<slug:slug>/', tagged, name="tagged"),
+
+]   
