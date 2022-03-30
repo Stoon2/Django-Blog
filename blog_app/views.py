@@ -266,6 +266,11 @@ def post_detail(request, pk):
 # Create your views here.
 # @login_required(login_url='login')
 # def home(request):
+def statrs(len):
+    word = " "
+    for x in range(0,len):
+        word+="*"
+    return word    
 
 def filterComment(commint):
     wordList = []
@@ -279,10 +284,13 @@ def filterComment(commint):
         capital = wordList[i].upper()
         index1 = commint.find(wordList[i])
         index12 = commint.find(capital)  
+        lenth = len(capital)
         if index1 >=0:
-            commint = commint.replace(wordList[i] , "****")
+            word = statrs(lenth)
+            commint = commint.replace(wordList[i] , word)
         if index12 >=0:
-             commint = commint.replace(capital , "****")
+            word = statrs(lenth)
+            commint = commint.replace(capital , word)
            
     
     return (commint)
@@ -342,7 +350,10 @@ def DislikeView(request, pk):
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
-
+def SubscribeView(request, pk):
+    category = get_object_or_404(Category, id=request.POST.get('category_id'))
+    category.subscriptions.add(request.user)
+    return redirect('home')
 
 def loginPG(request):
     if request.user.is_authenticated:
@@ -431,24 +442,7 @@ def admin_del_forbiddenWord(request, forbidden_word_id):
     forbidden_word.delete()
     return redirect('admin_forbidden')
 
-    # def add_cat(request):
-#     if request.user.is_authenticated and request.user.is_superuser :
-#         form = CategoryForm()
-#         if request.method == "POST":
-#             form = CategoryForm(request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 return redirect('home')
-#         context = {'form': form}
-#         return render(request, 'blog_app/add_category.html', context)
-#     else:
-#          return redirect('home') 
 
-# def del_post(request, post_id):
-#     if request.user.is_authenticated and request.user.is_superuser:
-#         post = category.objects.get(id=post_id)
-#         post.delete()
-#     return redirect('blog_admin/posts')
 def comment(request):
     comm_body=request.POST['body']
     comm_body = filterComment(comm_body)

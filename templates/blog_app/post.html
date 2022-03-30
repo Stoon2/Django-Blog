@@ -22,7 +22,7 @@
                 {{post.body|linebreaks}}
                 <p>Common Tags: 
                     {% for tag in common_tags %}
-                        <a href="#" class="badge badge-success">{{tag}}</a>
+                        <a href="#" class="badge badge-success text-dark">{{tag}}</a>
                         <!-- <span class="badge badge-light">{{ tag }}</span> -->
 
                     {% endfor %}
@@ -71,18 +71,18 @@
                                     <small class="font-weight-bold text-primary">
                                         {{comm.username}}
                                     </small>
-                                    <div class="comment-text" style="word-wrap: break-word; word-break: break-word; display: flex; width: 50%;">
+                                    <small>
+                                        <div class="comment-date" style="display: flex;">
+                                            {{comm.created_at}}
+                                        </div>
+                                    </small>
+                                    <div class="comment-text" style="word-wrap: break-word; word-break: break-word; display: flex; width: 100%;">
                                         <small class="font-weight-bold card-text">
                                             {{ comm.body}}
                                         </small>
                                     </div>
                                 </span>
                             </div>
-                            <small>
-                                <div class="comment-date" style="display: flex;">
-                                    {{comm.created_at}}
-                                </div>
-                            </small>
                         </div>
                     </div>
                 {% endfor %}
@@ -90,12 +90,14 @@
             </div>
         </div>
     </div>
-    <div class="comment-submit" style="justify-content: center; align-items: center; display: flex; margin: 20px;">
-        <form  method="POST" action="{% url 'addcomment' %}">
-            {% csrf_token %}
-                <input type="hidden" name="p_id" value="{{ post.id }}">
-                <textarea class="comm-body" rows="5" cols="50" placeholder=" write your comment...... " name="body"></textarea>
-                <button class="btn btn-success" type="submit"> Comment </button>
-        </form>
-    </div>
+    {% if user.is_authenticated %}
+            <div class="comment-submit" style="justify-content: center; align-items: center; display: flex; margin: 20px;">
+                <form  method="POST" action="{% url 'addcomment' %}">
+                    {% csrf_token %}
+                        <input type="hidden" name="p_id" value="{{ post.id }}">
+                        <textarea class="comm-body" rows="5" cols="50" placeholder=" write your comment...... " name="body"></textarea>
+                        <button class="btn btn-success" type="submit"> Comment </button>
+                </form>
+            </div>
+    {% endif %}
 {% endblock %}

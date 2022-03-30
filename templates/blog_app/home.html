@@ -131,6 +131,15 @@
             {% for category in categories %}
             <li>
                 <a href="{% url 'display_category' category.id %}">{{ category }}</a>
+                {% if user.is_authenticated %}
+                <form action="{% url 'sub_to_cat' category.pk %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary btn-sm" 
+                    name="category_id" value="{{ category.id }}">
+                        Subscribe
+                    </button>
+                </form>
+                {% endif %}
             </li>
             {% endfor %}
         </ul>
@@ -168,7 +177,7 @@
                             <p class="card-text mb-auto py-2">{{ post.body|safe|striptags|truncatechars:100 }}</p>
                             <div style="display:flex">
                                 {% for tag in post.tags.all %}
-                                <a href="{% url 'tagged' tag.slug %}" class=" badge badge-info">#{{ tag }}</a>
+                                <a href="{% url 'tagged' tag.slug %}" class=" badge badge-info text-dark">#{{ tag }}</a>
                                 {% endfor %}
                             </div>
                             <div>
