@@ -16,11 +16,11 @@
                 <td>{{ post.title }}</td>
                 <td>{{ post.author }}</td>
                 <td>{{ post.date_created }}</td>
-                <td><button class="btn btn-warning">Edit</button></td>
-                <td><button class="btn btn-danger" href= "{% url 'del_post' post.id %}" >Delete</button></td>
+                <td><a class="btn btn-warning" href= "{% url 'edit_post' post.id %}" >Edit</a></td>
+                <td><a class="btn btn-danger" href= "{% url 'del_post' post.id %}" >Delete</a></td>
             </tr>
             {% endfor %}
         </table>
-        <button class="btn btn-success">Add Post</button>
+        <a class="btn btn-success" href="{% url 'add_post' %}">Add Post</a>
     </div>
 {% endblock %}
