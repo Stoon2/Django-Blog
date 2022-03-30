@@ -8,6 +8,7 @@ from taggit.managers import TaggableManager
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=25)
+    subscriptions = models.ManyToManyField(User, related_name='category_subs')
 
     def __str__(self):
         return self.name

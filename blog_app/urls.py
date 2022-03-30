@@ -11,6 +11,7 @@ urlpatterns = [
     path('dislike/<int:pk>', views.DislikeView, name='dislike_post'),
     path('signup', views.signup, name='signup'),
     path('picked_category/<category_id>', views.display_posts_category, name='display_category'),
+    path('subscribe/<int:pk>', views.SubscribeView, name='sub_to_cat'),
     # path('add_category/', views.add_cat, name="add_cat"),
     # path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
 
