@@ -134,10 +134,17 @@
                 {% if user.is_authenticated %}
                 <form action="{% url 'sub_to_cat' category.pk %}" method="POST">
                     {% csrf_token %}
+                    {% if user in category.subscriptions.all %}
+                    <button type="submit" class="btn btn-outline-primary btn-sm" 
+                    name="category_id" value="{{ category.id }}">
+                        Unsubscribe
+                    </button>
+                    {% else %}
                     <button type="submit" class="btn btn-outline-primary btn-sm" 
                     name="category_id" value="{{ category.id }}">
                         Subscribe
                     </button>
+                    {% endif %}
                 </form>
                 {% endif %}
             </li>
