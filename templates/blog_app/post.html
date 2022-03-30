@@ -20,6 +20,13 @@
         </div>
         <div class="article-body">
                 {{post.body|linebreaks}}
+                <p>Common Tags: 
+                    {% for tag in common_tags %}
+                        <a href="#" class="badge badge-success">{{tag}}</a>
+                        <!-- <span class="badge badge-light">{{ tag }}</span> -->
+
+                    {% endfor %}
+                    </p>
         </div>
         {% if user.is_authenticated %}
         <div class="d-flex flex-row">

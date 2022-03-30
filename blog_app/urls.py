@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import HomeView, PostDetailView
+from .views import HomeView, PostDetailView,tagged
 
 urlpatterns = [
     path('login', views.loginPG, name='login'),
@@ -31,7 +31,14 @@ urlpatterns = [
     
     # Admin Categories CRUD
     path('add-category/', views.admin_add_category, name='add_category'),
-    path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
+    path('del_cat/<cat_id>', views.admin_del_category, name='del_cat'),
+    path('edit_cat/<cat_id>', views.admin_edit_category, name='edit_cat'),
+
+    # Admin ForbiddenWord CRUD
+
+    path('add_fWord', views.admin_add_forbiddenWord, name='add_fWord'),
+    path('del-fword/<forbiddenWord_id>', views.admin_del_forbiddenWord, name='del_fword'),
+    path('del-cat/<cat_id>', views.admin_del_category, name='del_cat'),
     
     # Admin Forbidden Word CRUD
     path('add_fWord', views.admin_add_forbiddenWord, name='add_fWord'),
@@ -44,4 +51,6 @@ urlpatterns = [
     path('demote-user/<user_id>', views.admin_demote_user, name='demote_user'),
     path('deactivate-user/<user_id>', views.admin_deactivate_user, name='deactivate_user'),
     path('activate-user/<user_id>', views.admin_activate_user, name='activate_user'),
-]
+    path('tag/<slug:slug>/', tagged, name="tagged"),
+
+]   

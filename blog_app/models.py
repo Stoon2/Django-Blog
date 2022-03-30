@@ -2,6 +2,8 @@ import email
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from taggit.managers import TaggableManager
+
 
 # Create your models here.
 class Category(models.Model):
@@ -20,6 +22,8 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='blog_posts')
     dislikes = models.ManyToManyField(User, related_name='post_dislikes')
     comment_number= models.IntegerField(default=0)
+    tags = TaggableManager()
+
 
     class Meta:
         ordering = ('-date_created', )
