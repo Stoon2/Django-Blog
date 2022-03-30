@@ -4,6 +4,12 @@ from threading import active_count, activeCount
 from unicodedata import category
 from urllib import response
 from xml.etree.ElementTree import Comment
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    PasswordChangeForm,
+    PasswordResetForm,
+    SetPasswordForm,
+)
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from .models import Post,Category
@@ -363,14 +369,18 @@ def loginPG(request):
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
-            user = authenticate(request, username=username, password=password)
-            user2 = authenticate(request, password=password)
+            user = authenticate(request, username=username, password=password)            
+            if not username or not password:
+               messages.info(request," Both Username and Password are required ")
+               return redirect('login')
+
+
             if user is not None:
                 login(request,user)
                 return redirect('home')
             
             try:   
-                User.objects.get(username= username)  
+                User.objects.get(username= username )  
             except User.DoesNotExist:
                 messages.info(request," incorrect Username Or Password ")
             else:

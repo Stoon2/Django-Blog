@@ -1,7 +1,8 @@
+from django import template
 from django.urls import path
 from . import views
 from .views import HomeView, PostDetailView,tagged
-
+from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('login', views.loginPG, name='login'),
     path('logout', views.logoutUser, name='logout'),
@@ -15,6 +16,24 @@ urlpatterns = [
     # path('add_category/', views.add_cat, name="add_cat"),
     # path('del-cat/<cat_id>', views.del_cat, name='del_cat'),
 
+    #rest password
+    # path('reset_password/',
+    #  auth_views.PasswordResetView.as_view(template_name="password_reset.html"),
+    #  name="reset_password"),
+
+    # path('reset_password_sent/', 
+    #     auth_views.PasswordResetDoneView.as_view(template_name="password_reset_sent.html"), 
+    #     name="password_reset_done"),
+
+    # path('reset/<uidb64>/<token>/',
+    #  auth_views.PasswordResetConfirmView.as_view(template_name="password_reset_form.html"), 
+    #  name="password_reset_confirm"),
+
+    # path('reset_password_complete/', 
+    #     auth_views.PasswordResetCompleteView.as_view(template_name="password_reset_done.html"), 
+    #     name="password_reset_complete"),
+
+   ####
     path('del-post/<post_id>', views.admin_del_post, name='del_post'),
     path('add-comment' , views.comment , name = 'addcomment' ),
 
