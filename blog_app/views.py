@@ -220,8 +220,12 @@ def admin_demote_user(request, user_id):
     user_id = int(user_id)
     try:
         user = User.objects.get(id = user_id)
+
     except User.DoesNotExist:
         return redirect('admin_home')
+    if(user.is_staff):
+        messages.info(request, 'Can\'t demote another admin')
+        return redirect('admin_users')
     user.is_staff = False
     user.is_admin = False
     user.save()
@@ -235,6 +239,9 @@ def admin_deactivate_user(request, user_id):
         user = User.objects.get(id = user_id)
     except User.DoesNotExist:
         return redirect('admin_home')
+    if(user.is_staff):
+        messages.info(request, 'Can\'t deactivate another admin')
+        return redirect('admin_users')
     user.is_active = False
     user.save()
     return redirect('admin_users')
