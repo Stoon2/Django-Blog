@@ -1,4 +1,6 @@
 from http.client import responses
+import os
+from threading import active_count, activeCount
 from unicodedata import category
 from urllib import response
 from xml.etree.ElementTree import Comment
@@ -8,9 +10,8 @@ from .models import Post,Category
 from django.views.generic import ListView, DetailView
 from .forms import AddCategoryForm, AddForbiddenWordForm, CategoryForm, CreatePostForm, EditUserForm 
 from django.contrib.auth.decorators import login_required
-from ast import Not
+from ast import If, Not
 from django.http import HttpResponseRedirect
-
 from email import message
 from multiprocessing import context
 from pdb import post_mortem
@@ -23,18 +24,16 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
-
 from django.utils import timezone
 from . import models as m
-
 from django.contrib.auth.decorators import user_passes_test
-
-
 from django.shortcuts import render
 from .models import Post , Forbiddenword
 from django.views.generic import ListView, DetailView
 from django.urls import reverse
 from django.db.models import F
+from taggit.models import Tag
+
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_home(request):
@@ -72,6 +71,18 @@ def admin_del_post(request, post_id):
         return redirect('admin_home')
     post_to_del.delete()
     return redirect('admin_posts')
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_del_category(request, cat_id):
+    post_id = int(post_id)
+    try:
+        category_to_del = Category.objects.get(id = cat_id)
+    except Category.DoesNotExist:
+        return redirect('admin_home')
+    category_to_del.delete()
+    return redirect('admin_categories')
+
+
+
 
     # def del_post(request, post_id):
     # if request.user.is_authenticated and request.user.is_superuser:
@@ -102,6 +113,21 @@ def admin_update_post(request, post_id):
         return render(request, 'blog_admin/edit_post.html', context)
         # return redirect('admin_posts')
 
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_edit_category(request, cat_id):
+        cat_id = int(cat_id)
+        category = category.objects.get(id = cat_id)
+        form = AddCategoryForm(instance=category)  
+        if request.method=='POST':
+            form = AddCategoryForm(request.POST, instance=category)
+            if form.is_valid():
+                form.save()
+                return redirect('admin_categories')
+        context = {'category_form' : form}
+        return render(request, 'blog_admin/edit_category.html', context)
+
+
+
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
 def admin_add_category(request):
@@ -112,6 +138,26 @@ def admin_add_category(request):
         return redirect('admin_categories')
 
     return render(request, 'blog_admin/add_category.html', context)
+        
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_add_forbiddenWord(request):
+    forbiddenWord_form = AddForbiddenWordForm(request.POST)
+    context = {'forbiddenWord_form' : forbiddenWord_form}
+    if forbiddenWord_form.is_valid():
+        forbiddenWord_form.save()
+        return redirect('admin_forbidden')
+
+    return render(request, 'blog_admin/add_forbidden.html', context)
+
+@user_passes_test(lambda u:u.is_staff, login_url='login')
+def admin_del_forbiddenWord(request, forbiddenWord_id):
+    post_id = int(post_id)
+    try:
+        forbiddenWord_to_del = Forbiddenword.objects.get(id = forbiddenWord_id)
+    except Forbiddenword.DoesNotExist:
+        return redirect('admin_home')
+    forbiddenWord_to_del.delete()
+    return redirect('admin_forbidden')
 
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
@@ -262,10 +308,13 @@ class PostDetailView(DetailView):
         post = get_object_or_404(Post, id=self.kwargs['pk'])
         total_likes = post.total_likes()
         total_dislikes = post.total_dislikes()
-        
+        common_tags = post.tags.most_common()[:4]
         context["total_likes"] = total_likes
         context["total_dislikes"] = total_dislikes
+        context["common_tags"] = common_tags
         return context
+
+   
 
 def LikeView(request, pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -295,6 +344,8 @@ def DislikeView(request, pk):
 
     return HttpResponseRedirect(reverse('post-detail', args=[str(pk)]))
 
+
+
 def loginPG(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -302,12 +353,21 @@ def loginPG(request):
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
-            user = authenticate(request, username=username,password=password)
+            user = authenticate(request, username=username, password=password)
+            user2 = authenticate(request, password=password)
             if user is not None:
                 login(request,user)
                 return redirect('home')
+            
+            try:   
+                User.objects.get(username= username)  
+            except User.DoesNotExist:
+                messages.info(request," incorrect Username Or Password ")
             else:
-                messages.info(request,"Username Or Password incorrect")
+                messages.info(request,"Blockebed Account, Plz contact with admins") 
+
+
+            
 
         return render(request, 'blog_app/login.html')
 
@@ -327,20 +387,31 @@ def signup(request):
                 form.save()
                 user =form.cleaned_data.get('username')
                 messages.success(request,'Account created for '+user)
+            
                 return redirect('login')
         context ={'form':form}
         return render(request, 'blog_app/signup.html',context)
 
+def tagged(request, slug):
+        tag = get_object_or_404(Tag, slug=slug)
+        common_tags = Post.tags.most_common()[:4]
+        posts = Post.objects.filter(tags=tag)
+        context = {
+            'tag':tag,
+            'common_tags':common_tags,
+            'posts':posts,
+        }
+        return render(request, 'blog_app/home.html', context)
 
 
 
-
-def del_cat(request, cat_id):
-    if request.user.is_authenticated and request.user.is_superuser:
-        category = category.objects.get(id=cat_id)
-        category.delete()
-        # return redirect('blog-index')
-    return redirect('blog_admin/categories')
+   
+# def del_cat(request, cat_id):
+#     if request.user.is_authenticated and request.user.is_superuser:
+#         category = category.objects.get(id=cat_id)
+#         category.delete()
+#         # return redirect('blog-index')
+#     return redirect('blog_admin/categories')
 
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
@@ -358,24 +429,7 @@ def admin_del_forbiddenWord(request, forbidden_word_id):
     forbidden_word.delete()
     return redirect('admin_forbidden')
 
-    # def add_cat(request):
-#     if request.user.is_authenticated and request.user.is_superuser :
-#         form = CategoryForm()
-#         if request.method == "POST":
-#             form = CategoryForm(request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 return redirect('home')
-#         context = {'form': form}
-#         return render(request, 'blog_app/add_category.html', context)
-#     else:
-#          return redirect('home') 
 
-# def del_post(request, post_id):
-#     if request.user.is_authenticated and request.user.is_superuser:
-#         post = category.objects.get(id=post_id)
-#         post.delete()
-#     return redirect('blog_admin/posts')
 def comment(request):
     comm_body=request.POST['body']
     comm_body = filterComment(comm_body)

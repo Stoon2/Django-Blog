@@ -15,9 +15,11 @@
     {% for category in categories %}
     <tr>
         <td>{{ category.name }}</td>
-        <td><button class="btn btn-warning" >Edit</button></td>
-        <td><button class="btn btn-danger" href= "{% url 'del_cat' category.id %}">Delete</button></td>
-       
+        <!-- <td><button class="btn btn-warning" ></button></td> -->
+        <!-- <td><button class="btn btn-danger" href= "{% url 'del_cat' category.id %}">Delete</button></td> -->
+        <td><a class="btn btn-warning" href= "{% url 'del_cat' category.id}" >Delete</a></td>
+        <td><a class="btn btn-danger" href= "{% url 'edit_cat' category.id}" >Edit</a></td>
+
     </tr>
     {% endfor %}
 </table>

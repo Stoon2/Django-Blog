@@ -26,7 +26,7 @@ class EditUserForm(forms.ModelForm):
 class CreatePostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'author', 'body', 'picture', 'categories')
+        fields = ('title', 'author', 'body', 'picture', 'categories','tags')
 
 class AddCategoryForm(forms.ModelForm):
     class Meta:
