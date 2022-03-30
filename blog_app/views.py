@@ -10,6 +10,10 @@ from django.contrib.auth.forms import (
     PasswordResetForm,
     SetPasswordForm,
 )
+# Pagination
+from django.core.paginator import Paginator
+from django.shortcuts import render
+
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from .models import Post,Category
@@ -298,7 +302,10 @@ def filterComment(commint):
 def HomeView(request):
     posts = Post.objects.all()
     categories = Category.objects.all()
-    context = {'posts': posts, 'categories': categories}
+    paginator = Paginator(posts, 2)
+    page_number  = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    context = {'posts': page_obj, 'categories': categories}
     return render(request, 'blog_app/home.html', context)
 
 # class HomeView(ListView):
@@ -415,16 +422,6 @@ def tagged(request, slug):
             'posts':posts,
         }
         return render(request, 'blog_app/home.html', context)
-
-
-
-   
-# def del_cat(request, cat_id):
-#     if request.user.is_authenticated and request.user.is_superuser:
-#         category = category.objects.get(id=cat_id)
-#         category.delete()
-#         # return redirect('blog-index')
-#     return redirect('blog_admin/categories')
 
 
 @user_passes_test(lambda u:u.is_staff, login_url='login')
