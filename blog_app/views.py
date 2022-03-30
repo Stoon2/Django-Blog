@@ -367,12 +367,7 @@ def loginPG(request):
                 messages.info(request," incorrect Username Or Password ")
             else:
                 messages.info(request,"Blockebed Account, Plz contact with admins") 
-            
-            user = authenticate(request, username=username, password=password)            
 
-            if user is not None:
-                messages.info(request," incorrect Username Or Password ")
-                
 
             
 
