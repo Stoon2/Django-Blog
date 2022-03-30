@@ -26,6 +26,9 @@
   
     <div class="container-md d-flex justify-content-center  rounded-top rounded-bottom" style="margin-top:50px;">
       <div class="user_card " >
+        <div class="d-flex justify-content-center">
+					<h3 id="form-title">LOG IN </h3>
+				</div>
         <form method="POST" action="">
           {% csrf_token %}
            
@@ -64,7 +67,6 @@
               <p id="messages">{{message}}</p>
             {% endfor %}
             <button type="submit" class="btn btn-primary" style="margin-left:90px; width: 140px;">Sign in</button>
-            <!-- <a href="#">Forgot your password?</a>   -->
             <div class="d-flex justify-content-center links login" style="margin-left:10px;">
               Don't have an account? <a href="{% url 'signup' %}" class="ml-2">Signup</a>
             </div>
