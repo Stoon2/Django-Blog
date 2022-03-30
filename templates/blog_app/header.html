@@ -23,16 +23,12 @@
         <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
         <a class="btn btn-outline-primary" href="{% url 'signup' %}">Sign-up</a>
       </div>
-        <div class="manage">
-          <span><a style="font-size: 18px ;color:white;" href="{% url 'admin_home' %}">Manage blog</a></span>
-
-        </div>
+       
       
-      <div  style="margin-left: 600px;" class="logged">
-        <!-- <a href="{% url 'admin_home' %}">manage blog</a> -->
-        
+      <div  style="margin-left: 400px;" class="logged row-md-0 text-end">
         <span style="font-size: 18px ;color:white;">Hello,{{request.user}}<span>
-        <span><a style="font-size: 18px ;color:white;" href="{% url 'logout' %}">Logout</a></span>
+        <a style="font-size: 18px ;color:white;" class="btn btn-outline-primary " href="{% url 'logout' %}">Logout</a>
+        <a style="font-size: 18px ;color:white;"class=" btn btn-outline-primary manage" href="{% url 'admin_home' %}">Manage blog</a>
       </div>
     
     </header>
