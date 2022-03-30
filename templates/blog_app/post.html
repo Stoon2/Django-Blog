@@ -83,12 +83,14 @@
             </div>
         </div>
     </div>
-    <div class="comment-submit" style="justify-content: center; align-items: center; display: flex; margin: 20px;">
-        <form  method="POST" action="{% url 'addcomment' %}">
-            {% csrf_token %}
-                <input type="hidden" name="p_id" value="{{ post.id }}">
-                <textarea class="comm-body" rows="5" cols="50" placeholder=" write your comment...... " name="body"></textarea>
-                <button class="btn btn-success" type="submit"> Comment </button>
-        </form>
-    </div>
+    {% if user.is_authenticated %}
+            <div class="comment-submit" style="justify-content: center; align-items: center; display: flex; margin: 20px;">
+                <form  method="POST" action="{% url 'addcomment' %}">
+                    {% csrf_token %}
+                        <input type="hidden" name="p_id" value="{{ post.id }}">
+                        <textarea class="comm-body" rows="5" cols="50" placeholder=" write your comment...... " name="body"></textarea>
+                        <button class="btn btn-success" type="submit"> Comment </button>
+                </form>
+            </div>
+    {% endif %}
 {% endblock %}

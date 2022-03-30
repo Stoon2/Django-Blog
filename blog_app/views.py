@@ -214,6 +214,11 @@ def post_detail(request, pk):
 # Create your views here.
 # @login_required(login_url='login')
 # def home(request):
+def statrs(len):
+    word = " "
+    for x in range(0,len):
+        word+="*"
+    return word    
 
 def filterComment(commint):
     wordList = []
@@ -227,10 +232,13 @@ def filterComment(commint):
         capital = wordList[i].upper()
         index1 = commint.find(wordList[i])
         index12 = commint.find(capital)  
+        lenth = len(capital)
         if index1 >=0:
-            commint = commint.replace(wordList[i] , "****")
+            word = statrs(lenth)
+            commint = commint.replace(wordList[i] , word)
         if index12 >=0:
-             commint = commint.replace(capital , "****")
+            word = statrs(lenth)
+            commint = commint.replace(capital , word)
            
     
     return (commint)
