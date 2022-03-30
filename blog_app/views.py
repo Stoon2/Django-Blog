@@ -346,7 +346,14 @@ def DislikeView(request, pk):
 
 def SubscribeView(request, pk):
     category = get_object_or_404(Category, id=request.POST.get('category_id'))
-    category.subscriptions.add(request.user)
+    subscribed = False
+    if category.subscriptions.filter(id=request.user.id).exists():
+        category.subscriptions.remove(request.user)
+        subscribed = False
+    else:
+        category.subscriptions.add(request.user)
+        subscribed = True
+
     return redirect('home')
 
 def loginPG(request):
